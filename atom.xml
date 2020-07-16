@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2020-07-16T12:06:36.107Z</updated>
+  <updated>2020-07-16T15:30:17.505Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MarkdownCheatSheet</title>
+    <link href="https://crunchybiscuits.github.io/2020/07/17/MarkdownCheatSheet/"/>
+    <id>https://crunchybiscuits.github.io/2020/07/17/MarkdownCheatSheet/</id>
+    <published>2020-07-16T15:28:38.000Z</published>
+    <updated>2020-07-16T15:30:17.505Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="常用Markdown语法"><a href="#常用Markdown语法" class="headerlink" title="常用Markdown语法"></a>常用Markdown语法</h1><p>仅列出常用的markdown语法，有不少情况没有列出可参考<a href="[https://crunchybiscuits.github.io/2020/07/14/Markdown%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95/](https://crunchybiscuits.github.io/2020/07/14/Markdown基础语法/)">Markdown基础语法</a></p><table><thead><tr><th>类型</th><th>语法</th></tr></thead><tbody><tr><td>标题</td><td># 一级标题<br>## 二级标题<br>### 三级标题</td></tr><tr><td>加粗</td><td>*<em>文本*</em></td></tr><tr><td>斜体</td><td>*斜体*</td></tr><tr><td>有序列表</td><td>1. first<br>2. second<br>3. third</td></tr><tr><td>无序列表</td><td>- first<br>- second<br>- third</td></tr><tr><td>单行代码</td><td>`代码`</td></tr><tr><td>分隔符</td><td>***</td></tr><tr><td>链接</td><td>[title](<a href="https://example.com" target="_blank" rel="noopener">https://example.com</a>)</td></tr><tr><td>图片</td><td>![text](image.jpg)</td></tr><tr><td>块引用</td><td>&gt; 块引用</td></tr></tbody></table>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;常用Markdown语法&quot;&gt;&lt;a href=&quot;#常用Markdown语法&quot; class=&quot;headerlink&quot; title=&quot;常用Markdown语法&quot;&gt;&lt;/a&gt;常用Markdown语法&lt;/h1&gt;&lt;p&gt;仅列出常用的markdown语法，有不少情况没有列出可参考&lt;
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>Markdown基础语法</title>
