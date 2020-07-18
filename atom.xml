@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2020-07-18T15:22:53.603Z</updated>
+  <updated>2020-07-18T15:23:55.110Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://crunchybiscuits.github.io/2020/07/19/PicGo-Github%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/"/>
     <id>https://crunchybiscuits.github.io/2020/07/19/PicGo-Github%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/</id>
     <published>2020-07-18T14:26:32.000Z</published>
-    <updated>2020-07-18T15:22:53.603Z</updated>
+    <updated>2020-07-18T15:23:55.110Z</updated>
     
     <content type="html"><![CDATA[<p>本文写于2020-07-19，请参考时考虑时间以及软件版本</p><p>PicGo+Github搭建图床，方便图片上传和管理，文章参考<a href="https://juejin.im/entry/5c4ec5aaf265da614420689f" target="_blank" rel="noopener">https://juejin.im/entry/5c4ec5aaf265da614420689f</a></p><h2 id="Github图床设置"><a href="#Github图床设置" class="headerlink" title="Github图床设置"></a>Github图床设置</h2><p>进入自己的Github账户，创建新的Repository并命名, 因为这里笔者已经创建过Image-Host的库，所以显示重名。</p><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github_2020-07-19_00-48-53.jpg" alt="创建新的Repository"></p><p>接着进入账户设置</p><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github1_2020-07-19_00-53-51.jpg" alt="进入账户设置"></p><p>进入Developer settings</p><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github2_2020-07-19_00-56-12.jpg" alt="Developer settings"></p><p>点击Generate new token</p><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github3_2020-07-19_01-00-54.jpg" alt="Generate new token"></p><p>为token添加描述，并点选repo, 接着点击最下方的Generate token按钮即可</p><p><strong>注意：创建好后会生成一串token，此token只在github上显示一次，请妥善保存</strong></p><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github4_2020-07-19_01-04-59.jpg" alt="token设置"></p><h2 id="PicGo"><a href="#PicGo" class="headerlink" title="PicGo"></a>PicGo</h2><p>PicGo为免费开源图床管理工具，<a href="https://github.com/Molunerfinn/PicGo" target="_blank" rel="noopener">下载地址在这</a><br>Windows, Mac, Linux系统都有支持<br>并且支持多种平台，如阿里云，腾讯云等</p><p>本文使用PicGo 2.2.2 ，下载好后如图所示<br><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/picgo_2020-07-19_00-35-15.jpg" alt="PicGo界面"></p><p>点开PicGo设置，因为仅使用Github作为图床，所以将剩余的平台显示关闭</p><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/picgo1_2020-07-19_00-40-03.jpg" alt="PicGo设置"></p><p>点击打开图床设置</p><ul><li>设定仓库名：Github账户名/仓库名</li><li>设定分支名：需填写为master</li><li>设定Token：将在github中生成的token填入</li><li>存储路径：可按自己意愿设定，之后会在github库中创建对应名称文件夹，下图会创建img文件夹</li><li>自定义域名：用于图片的引用和访问，<strong>注意格式必须为<code>https://raw.githubusercontent.com/</code>账户名/仓库名/分支名</strong>，图中为<code>https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master</code></li></ul><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/picgo2_2020-07-19_01-10-53.jpg" alt="图床设置"></p><p>设定完成便可方便的上传以及管理图片</p>]]></content>
     
@@ -36,6 +36,8 @@
     </summary>
     
     
+    
+      <category term="Markdown" scheme="https://crunchybiscuits.github.io/tags/Markdown/"/>
     
   </entry>
   
