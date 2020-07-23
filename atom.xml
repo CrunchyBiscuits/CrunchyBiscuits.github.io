@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2020-07-23T00:59:36.482Z</updated>
+  <updated>2020-07-23T08:12:45.288Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>BigO基础介绍02</title>
+    <link href="https://crunchybiscuits.github.io/2020/07/23/BigO%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D02/"/>
+    <id>https://crunchybiscuits.github.io/2020/07/23/BigO%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D02/</id>
+    <published>2020-07-23T08:12:45.000Z</published>
+    <updated>2020-07-23T08:12:45.288Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Big-O-基础介绍-二"><a href="#Big-O-基础介绍-二" class="headerlink" title="Big O 基础介绍(二)"></a>Big O 基础介绍(二)</h1><h2 id="多项式算法的加和乘"><a href="#多项式算法的加和乘" class="headerlink" title="多项式算法的加和乘"></a>多项式算法的加和乘</h2><p>算法中常见的分步形式如下:</p><p><strong>O( A + B )</strong> :</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> a : arrA)&#123;</span><br><span class="line">    print(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> b : arrB)&#123;</span><br><span class="line">    print(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>O( A * B )</strong>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> a : arrA)&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> b : arrB)&#123;</span><br><span class="line">        print(a + <span class="string">","</span> + b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>第一个例子，先遍历A数组，再遍历B数组，所以总数量是O( A + B )。</p><p>第二个例子，对A数组的每个元素都遍历B数组，所以总数量是O( A * B )。</p><ul><li>”先做这个，再做那个”的形式，就是加</li><li>“对这个的每个做那个”的形式，就是乘</li></ul><h2 id="分摊时间"><a href="#分摊时间" class="headerlink" title="分摊时间"></a>分摊时间</h2><p>在计算时间复杂度的时候常常会碰到最坏情况偶尔会出现，一旦发生会消耗很多资源，但是发生之后很长一段时间不会发生，因此需要兼顾正常情况和最坏情况，将时间进行”分摊“。</p><p>例如Java中<code>ArrayList</code>能够灵活的改变大小，能够随着你的插入进行扩容。</p><p><code>ArrayList</code>容量达到限制的时候会创建一个双倍容量的数组，将元素复制到新的数组里面。</p><p>那么描述<code>ArrayList</code>的插入时间，当数组没有满的时候，插入就是O(1)。</p><p>当数组满了，如果数组大小为N，那么需要扩容到2N，并把旧的值复制过去，那么插入就需要O(N)。</p><p>那么”分摊时间“该怎么计算？</p><p>假设需要插入N个元素，<code>ArrayList</code>数组的大小为2的幂数，<strong>当插入一个元素便扩容两倍</strong>。当元素是N的时候，以1，2，4，8，16，32……，N的数组大小成倍的扩容。每次操作需要复制1，2，4，8，16，……，N个元素。</p><p>那么消耗便是1 + 2 + 4 + 8 + 16 + ··· + N的和，从右往左计算便是 N + N/2 + N/4 + N/8 + ··· + 1的和，这个和约等于2N。</p><p>因此，N次插入需要的时间便是O(2N)， 即每次插入的分摊时间为O(1)。</p><h2 id="Log-N-运行时间"><a href="#Log-N-运行时间" class="headerlink" title="Log N 运行时间"></a>Log N 运行时间</h2><p>以二分查找为例。如果一个排序数组的长度为N，目标值为x。首先比较x和中值的大小，如果等于就直接返回，如果x小于便搜索数组中值左边的部分，如果x大于中值便搜索右边的部分。</p><p>开始的时候有N个元素，搜索一次后便是N/2，接着是N/4，直到找到目标或者需要搜索的元素变成1。</p><p>假设有N个元素，总的运行时间便是从N到1一共搜索了多少次。</p><p>如果开始有32个元素</p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">N = 32</span><br><span class="line">N = 16 除以2</span><br><span class="line">N = 8  除以2</span><br><span class="line">N = 4  除以2</span><br><span class="line">N = 2  除以2</span><br><span class="line">N = 1  除以2</span><br></pre></td></tr></table></figure><p>从32到1，需要5次</p><p>如果从1开始看，从1到32则需要2^5</p><p>因此得到2^k = N，k = log2(N)</p><p>所以得到运行时间O(logN)</p><p>平衡二叉搜索树中也有同样的情况，每次搜索便将规模减半，最坏情况为平衡二叉搜索树的高度，也是O(logN)。</p><h2 id="递归运行时间"><a href="#递归运行时间" class="headerlink" title="递归运行时间"></a>递归运行时间</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &lt;= <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> f(n - <span class="number">1</span>) + f(n - <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>通过模拟执行来显示运行时间，如果我们调用f(4)，那么会调用f(3)两次，每个f(3)又会调用f(2)两次，每个f(2)又会调用f(1)两次。如下图显示的节点展开。</p><p><img src= "/img/loading.gif" data-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/bigo4.jpg" alt="递归节点显示"></p><p>图中一共展开了多少节点？</p><table><thead><tr><th>层</th><th>节点数</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>2 * 上一层节点数 = 2 * 1 = 2 = 2^1</td></tr><tr><td>2</td><td>2 * 上一层节点数 = 2 * 2 = 4 = 2^2</td></tr><tr><td>3</td><td>2 * 上一层节点数 = 2 * 4 = 8 = 2^3</td></tr></tbody></table><p>所以展开是2^0 + 2^1 + 2^2 + 2^3  =  2^4 -1 </p><p>扩展到N则是2^0 + 2^1 + 2^2 + 2^3 + ··· + 2^N = 2^(N+1) - 1</p><p>因此时间复杂度为O(2^(N+1) - 1)舍弃掉常数项为O(2^N)</p><p>常见递归中复杂度通常为，O(分支数^递归深度)，偶尔也有特殊情况。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Big-O-基础介绍-二&quot;&gt;&lt;a href=&quot;#Big-O-基础介绍-二&quot; class=&quot;headerlink&quot; title=&quot;Big O 基础介绍(二)&quot;&gt;&lt;/a&gt;Big O 基础介绍(二)&lt;/h1&gt;&lt;h2 id=&quot;多项式算法的加和乘&quot;&gt;&lt;a href=&quot;#多项
+      
+    
+    </summary>
+    
+    
+    
+      <category term="BigO" scheme="https://crunchybiscuits.github.io/tags/BigO/"/>
+    
+  </entry>
   
   <entry>
     <title>BigO基础介绍01</title>
