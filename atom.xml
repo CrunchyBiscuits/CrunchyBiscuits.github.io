@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2020-08-10T14:43:52.239Z</updated>
+  <updated>2020-08-19T02:28:50.401Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>链表练习中未注意的点</title>
+    <link href="https://crunchybiscuits.github.io/2020/08/19/%E9%93%BE%E8%A1%A8%E7%BB%83%E4%B9%A0%E4%B8%AD%E6%9C%AA%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/"/>
+    <id>https://crunchybiscuits.github.io/2020/08/19/%E9%93%BE%E8%A1%A8%E7%BB%83%E4%B9%A0%E4%B8%AD%E6%9C%AA%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/</id>
+    <published>2020-08-19T02:19:31.000Z</published>
+    <updated>2020-08-19T02:28:50.401Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="特定深度节点链表"><a href="#特定深度节点链表" class="headerlink" title="特定深度节点链表"></a>特定深度节点链表</h1><p>题目取自《程序员面试金典》4.3</p><h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>类似广度优先遍历，通过遍历每一层，并逐层添加相应节点</p><h3 id="错误来源"><a href="#错误来源" class="headerlink" title="错误来源"></a>错误来源</h3><p>没有正确的处理链表头节点的位置，因为力扣题目里没有直接使用LinkedList类，而是使用了最基本的节点，所以需要使用一个指针对头节点进行保存，另一个指针进行添加操作。</p><p>错误示范</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public ListNode[] addLists(ListNode[] listOfLevel, int index, TreeNode tree)</span><br><span class="line">&#123;</span><br><span class="line">        if (tree &#x3D;&#x3D; null) return listOfLevel;</span><br><span class="line">        ListNode temp &#x3D; listOfLevel[index];</span><br><span class="line">        while (temp!&#x3D; null)</span><br><span class="line">        &#123;</span><br><span class="line">            temp &#x3D; temp.next;</span><br><span class="line">        &#125;</span><br><span class="line">        temp &#x3D; new ListNode(tree.val);</span><br><span class="line">        temp &#x3D; temp.next;</span><br><span class="line">            </span><br><span class="line">        return listOfLevel;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="正确答案"><a href="#正确答案" class="headerlink" title="正确答案"></a>正确答案</h3><p>先通过c#，list类对每一层进行节点的创建，设置计数器对每一层的节点数量进行控制，最后再创建答案的数组。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">public ListNode[] ListOfDepth(TreeNode tree)</span><br><span class="line">&#123;</span><br><span class="line">    if (tree &#x3D;&#x3D; null) return null;</span><br><span class="line">    List&lt;ListNode&gt; listOfLevels &#x3D; new List&lt;ListNode&gt;();</span><br><span class="line">    int curr &#x3D; 1;</span><br><span class="line">    int next &#x3D; 0;</span><br><span class="line">    Queue&lt;TreeNode&gt; queue &#x3D; new Queue&lt;TreeNode&gt;();</span><br><span class="line">    queue.Enqueue(tree);</span><br><span class="line">    ListNode node &#x3D; new ListNode(0);</span><br><span class="line">    ListNode find &#x3D; node;</span><br><span class="line">    while (queue.Count &gt; 0)</span><br><span class="line">    &#123;</span><br><span class="line">        TreeNode temp &#x3D; queue.Dequeue();</span><br><span class="line">        node.next &#x3D; new ListNode(temp.val);</span><br><span class="line">        node &#x3D; node.next;</span><br><span class="line">        curr--;</span><br><span class="line">        if (temp.left !&#x3D; null)</span><br><span class="line">        &#123;</span><br><span class="line">            queue.Enqueue(temp.left);</span><br><span class="line">            next++;</span><br><span class="line">        &#125;</span><br><span class="line">        if (temp.right !&#x3D; null)</span><br><span class="line">        &#123;</span><br><span class="line">            queue.Enqueue(temp.right);</span><br><span class="line">            next++;</span><br><span class="line">        &#125;</span><br><span class="line">        if(curr &#x3D;&#x3D; 0)</span><br><span class="line">        &#123;</span><br><span class="line">            curr &#x3D; next;</span><br><span class="line">            next &#x3D; 0;</span><br><span class="line">            listOfLevels.Add(find.next);</span><br><span class="line">            node &#x3D; new ListNode(0);</span><br><span class="line">            find &#x3D; node;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    return listOfLevels.ToArray();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;特定深度节点链表&quot;&gt;&lt;a href=&quot;#特定深度节点链表&quot; class=&quot;headerlink&quot; title=&quot;特定深度节点链表&quot;&gt;&lt;/a&gt;特定深度节点链表&lt;/h1&gt;&lt;p&gt;题目取自《程序员面试金典》4.3&lt;/p&gt;
+&lt;h2 id=&quot;思路&quot;&gt;&lt;a href=&quot;#思路&quot;
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Linked List" scheme="https://crunchybiscuits.github.io/tags/Linked-List/"/>
+    
+  </entry>
   
   <entry>
     <title>LinkedList介绍</title>
