@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2020-09-13T01:24:18.095Z</updated>
+  <updated>2020-09-20T01:56:18.355Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>shader入门</title>
+    <link href="https://crunchybiscuits.github.io/2020/09/19/shader%E5%85%A5%E9%97%A8/"/>
+    <id>https://crunchybiscuits.github.io/2020/09/19/shader%E5%85%A5%E9%97%A8/</id>
+    <published>2020-09-18T23:36:59.000Z</published>
+    <updated>2020-09-20T01:56:18.355Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Shader"><a href="#Shader" class="headerlink" title="Shader"></a>Shader</h1><h2 id="GLSL"><a href="#GLSL" class="headerlink" title="GLSL"></a>GLSL</h2><p>GLSL不提供着色器编译器，所以编译结果完全取决于硬件供应商，可能会导致编译结果不一致，但是有点是可以发挥硬件的最大性能，因为是供应商进行显卡驱动的编写</p><h2 id="HLSL"><a href="#HLSL" class="headerlink" title="HLSL"></a>HLSL</h2><p>使用不同的硬件也可以有一样的结果，因此HLSL使用的平台相对比较有限，几乎完全是微软自己的产品。</p><h2 id="Cg"><a href="#Cg" class="headerlink" title="Cg"></a>Cg</h2><p>Cg和HLSL语法很想，因为和微软合作了。真正的跨平台会根据平台的不同，编译成相应的中间语言。</p><h2 id="固定管线渲染"><a href="#固定管线渲染" class="headerlink" title="固定管线渲染"></a>固定管线渲染</h2><p>通常指在比较旧的GPU上实现的渲染管线。只为开发者提供了一些配置操作。</p><h2 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h2><p>相比起draw call命令，改变渲染状态的命令往往更加耗时</p><p>减少draw call的方法之一 —- 批处理</p><p>游戏开发过程中可以注意的</p><ul><li>避免使用大量很小的网格。不可避免的需要使用的时候，考虑是否可以合并。</li><li>避免使用过多的材质。尽量在不同的网格之间使用同一种材质。</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Shader&quot;&gt;&lt;a href=&quot;#Shader&quot; class=&quot;headerlink&quot; title=&quot;Shader&quot;&gt;&lt;/a&gt;Shader&lt;/h1&gt;&lt;h2 id=&quot;GLSL&quot;&gt;&lt;a href=&quot;#GLSL&quot; class=&quot;headerlink&quot; title=&quot;G
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
+    
+  </entry>
   
   <entry>
     <title>test</title>
