@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2020-12-03T07:26:37.472Z</updated>
+  <updated>2020-12-11T02:25:28.583Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GAMES101作业2</title>
+    <link href="https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A2/"/>
+    <id>https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A2/</id>
+    <published>2020-12-11T02:25:28.000Z</published>
+    <updated>2020-12-11T02:25:28.583Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>GAMES101作业1</title>
+    <link href="https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A1/"/>
+    <id>https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A1/</id>
+    <published>2020-12-11T02:23:28.000Z</published>
+    <updated>2020-12-11T02:23:28.048Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+    
+  </entry>
   
   <entry>
     <title>光线追踪</title>
@@ -67,45 +97,6 @@
     
     
       <category term="GAMES101" scheme="https://crunchybiscuits.github.io/tags/GAMES101/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>霍尔逻辑-循环不变性记录</title>
-    <link href="https://crunchybiscuits.github.io/2020/10/22/%E9%9C%8D%E5%B0%94%E9%80%BB%E8%BE%91-%E5%BE%AA%E7%8E%AF%E4%B8%8D%E5%8F%98%E6%80%A7%E8%AE%B0%E5%BD%95/"/>
-    <id>https://crunchybiscuits.github.io/2020/10/22/%E9%9C%8D%E5%B0%94%E9%80%BB%E8%BE%91-%E5%BE%AA%E7%8E%AF%E4%B8%8D%E5%8F%98%E6%80%A7%E8%AE%B0%E5%BD%95/</id>
-    <published>2020-10-21T16:29:27.000Z</published>
-    <updated>2020-10-21T13:29:27.504Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>待整理笔记</title>
-    <link href="https://crunchybiscuits.github.io/2020/09/23/%E5%BE%85%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/"/>
-    <id>https://crunchybiscuits.github.io/2020/09/23/%E5%BE%85%E6%95%B4%E7%90%86%E7%AC%94%E8%AE%B0/</id>
-    <published>2020-09-23T12:45:14.000Z</published>
-    <updated>2020-09-23T10:45:55.148Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="GLSL"><a href="#GLSL" class="headerlink" title="GLSL"></a>GLSL</h2><p>GLSL不提供着色器编译器，所以编译结果完全取决于硬件供应商，可能会导致编译结果不一致，但是有点是可以发挥硬件的最大性能，因为是供应商进行显卡驱动的编写</p><h2 id="HLSL"><a href="#HLSL" class="headerlink" title="HLSL"></a>HLSL</h2><p>使用不同的硬件也可以有一样的结果，因此HLSL使用的平台相对比较有限，几乎完全是微软自己的产品。</p><h2 id="Cg"><a href="#Cg" class="headerlink" title="Cg"></a>Cg</h2><p>Cg和HLSL语法很想，因为和微软合作了。真正的跨平台会根据平台的不同，编译成相应的中间语言。</p><h2 id="固定管线渲染"><a href="#固定管线渲染" class="headerlink" title="固定管线渲染"></a>固定管线渲染</h2><p>通常指在比较旧的GPU上实现的渲染管线。只为开发者提供了一些配置操作。</p><h2 id="杂"><a href="#杂" class="headerlink" title="杂"></a>杂</h2><p>相比起draw call命令，改变渲染状态的命令往往更加耗时</p><p>减少draw call的方法之一 —- 批处理</p><p>游戏开发过程中可以注意的</p><ul><li>避免使用大量很小的网格。不可避免的需要使用的时候，考虑是否可以合并。</li><li>避免使用过多的材质。尽量在不同的网格之间使用同一种材质。</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;GLSL&quot;&gt;&lt;a href=&quot;#GLSL&quot; class=&quot;headerlink&quot; title=&quot;GLSL&quot;&gt;&lt;/a&gt;GLSL&lt;/h2&gt;&lt;p&gt;GLSL不提供着色器编译器，所以编译结果完全取决于硬件供应商，可能会导致编译结果不一致，但是有点是可以发挥硬件的最大性能，因
-      
-    
-    </summary>
-    
-    
-    
-      <category term="杂" scheme="https://crunchybiscuits.github.io/tags/%E6%9D%82/"/>
     
   </entry>
   
