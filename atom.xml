@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2020-12-11T02:25:28.583Z</updated>
+  <updated>2020-12-17T03:44:50.419Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -17,32 +17,26 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>GAMES101作业2</title>
-    <link href="https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A2/"/>
-    <id>https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A2/</id>
+    <title>GAMES101 Assignment1</title>
+    <link href="https://crunchybiscuits.github.io/2020/12/11/GAMES101Assignment1/"/>
+    <id>https://crunchybiscuits.github.io/2020/12/11/GAMES101Assignment1/</id>
     <published>2020-12-11T02:25:28.000Z</published>
-    <updated>2020-12-11T02:25:28.583Z</updated>
+    <updated>2020-12-17T03:44:50.419Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="GAMES101-Assignment1-对应Lecture3-4"><a href="#GAMES101-Assignment1-对应Lecture3-4" class="headerlink" title="GAMES101 Assignment1 (对应Lecture3-4)"></a>GAMES101 Assignment1 (对应Lecture3-4)</h1><p>课程作业框架来自<a href="http://games-cn.org/forums/topic/allhw/">GAMES</a></p><h2 id="作业基础部分："><a href="#作业基础部分：" class="headerlink" title="作业基础部分："></a>作业基础部分：</h2><p>目标要求：需要完成一个旋转矩阵和一个透视投影矩阵，根据给定的三维坐标在屏幕上绘制相应的三角形。</p><p>*<em>main.cpp *</em></p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">Eigen::Matrix4f <span class="title">get_projection_matrix</span><span class="params">(<span class="keyword">float</span> eye_fov, <span class="keyword">float</span> aspect_ratio,</span></span></span><br><span class="line"><span class="function"><span class="params">                                      <span class="keyword">float</span> zNear, <span class="keyword">float</span> zFar)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// Students will implement this function</span></span><br><span class="line">    Eigen::Matrix4f projection = Eigen::Matrix4f::Identity();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// <span class="doctag">TODO:</span> Implement this function</span></span><br><span class="line">    <span class="comment">// Create the projection matrix for the given parameters.</span></span><br><span class="line">    <span class="comment">// Then return it.</span></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">float</span> t = <span class="built_in">tan</span>(eye_fov/<span class="number">2</span>*MY_PI/<span class="number">180</span>)*-zNear;</span><br><span class="line">    <span class="keyword">float</span> r = aspect_ratio*t;</span><br><span class="line">    <span class="keyword">float</span> b = -t;</span><br><span class="line">    <span class="keyword">float</span> l = -r;</span><br><span class="line"></span><br><span class="line">    Eigen::Matrix4f S,T,M;</span><br><span class="line">    S&lt;&lt;</span><br><span class="line">    <span class="number">2</span>/(r-l),<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>,<span class="number">2</span>/(t-b),<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>,<span class="number">0</span>,<span class="number">2</span>/(zNear-zFar),<span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    T&lt;&lt;</span><br><span class="line">    <span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,-(l+r)/<span class="number">2</span>,</span><br><span class="line">    <span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,-(b+t)/<span class="number">2</span>,</span><br><span class="line">    <span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,-(zFar+zNear)/<span class="number">2</span>,</span><br><span class="line">    <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    M&lt;&lt;</span><br><span class="line">    zNear,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>,zNear,<span class="number">0</span>,<span class="number">0</span>,</span><br><span class="line">    <span class="number">0</span>,<span class="number">0</span>,zNear+zFar,-zFar*zNear,</span><br><span class="line">    <span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    projection = S*T*M;</span><br><span class="line">    <span class="keyword">return</span> projection;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h2 id="提高部分："><a href="#提高部分：" class="headerlink" title="提高部分："></a>提高部分：</h2><p>目标要求：在main.cpp实现一个函数完成绕任意过原点轴的旋转变换矩阵</p>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;GAMES101-Assignment1-对应Lecture3-4&quot;&gt;&lt;a href=&quot;#GAMES101-Assignment1-对应Lecture3-4&quot; class=&quot;headerlink&quot; title=&quot;GAMES101 Assignment1 (对应Le
+      
     
     </summary>
     
     
     
-  </entry>
-  
-  <entry>
-    <title>GAMES101作业1</title>
-    <link href="https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A1/"/>
-    <id>https://crunchybiscuits.github.io/2020/12/11/GAMES101%E4%BD%9C%E4%B8%9A1/</id>
-    <published>2020-12-11T02:23:28.000Z</published>
-    <updated>2020-12-11T02:23:28.048Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
+      <category term="GAMES101" scheme="https://crunchybiscuits.github.io/tags/GAMES101/"/>
     
   </entry>
   
@@ -102,8 +96,8 @@
   
   <entry>
     <title>shader入门-(数学)</title>
-    <link href="https://crunchybiscuits.github.io/2020/09/19/shader%E5%85%A5%E9%97%A8-(%E6%95%B0%E5%AD%A6)/"/>
-    <id>https://crunchybiscuits.github.io/2020/09/19/shader%E5%85%A5%E9%97%A8-(%E6%95%B0%E5%AD%A6)/</id>
+    <link href="https://crunchybiscuits.github.io/2020/09/19/shader%E5%85%A5%E9%97%A8-(%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0)/"/>
+    <id>https://crunchybiscuits.github.io/2020/09/19/shader%E5%85%A5%E9%97%A8-(%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0)/</id>
     <published>2020-09-19T01:36:59.000Z</published>
     <updated>2020-09-23T23:33:36.889Z</updated>
     
