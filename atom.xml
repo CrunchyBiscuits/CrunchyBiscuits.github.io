@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-02-15T07:37:41.890Z</updated>
+  <updated>2021-02-15T13:23:07.304Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -17,19 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>渲染器的诞生(四)--透视投影</title>
+    <title>UV和像素</title>
+    <link href="https://crunchybiscuits.github.io/2021/02/15/UV%E5%92%8C%E5%83%8F%E7%B4%A0/"/>
+    <id>https://crunchybiscuits.github.io/2021/02/15/UV%E5%92%8C%E5%83%8F%E7%B4%A0/</id>
+    <published>2021-02-15T13:23:07.000Z</published>
+    <updated>2021-02-15T13:23:07.304Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>渲染器的诞生(四)--移动相机</title>
     <link href="https://crunchybiscuits.github.io/2021/02/15/%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1/"/>
     <id>https://crunchybiscuits.github.io/2021/02/15/%E9%80%8F%E8%A7%86%E6%8A%95%E5%BD%B1/</id>
     <published>2021-02-15T07:37:01.000Z</published>
-    <updated>2021-02-15T07:37:41.890Z</updated>
+    <updated>2021-02-15T08:07:41.156Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="透视投影"><a href="#透视投影" class="headerlink" title="透视投影"></a>透视投影</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="移动相机"><a href="#移动相机" class="headerlink" title="移动相机"></a>移动相机</h1>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h1 id=&quot;透视投影&quot;&gt;&lt;a href=&quot;#透视投影&quot; class=&quot;headerlink&quot; title=&quot;透视投影&quot;&gt;&lt;/a&gt;透视投影&lt;/h1&gt;
+        &lt;h1 id=&quot;移动相机&quot;&gt;&lt;a href=&quot;#移动相机&quot; class=&quot;headerlink&quot; title=&quot;移动相机&quot;&gt;&lt;/a&gt;移动相机&lt;/h1&gt;
       
     
     </summary>
