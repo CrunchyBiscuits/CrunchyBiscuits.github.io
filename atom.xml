@@ -34,11 +34,11 @@
   </entry>
   
   <entry>
-    <title>渲染器的诞生(六)--ShadowMapping</title>
+    <title>渲染器的诞生(六)--Shadow Mapping</title>
     <link href="https://crunchybiscuits.github.io/2021/02/17/ShadowMapping/"/>
     <id>https://crunchybiscuits.github.io/2021/02/17/ShadowMapping/</id>
     <published>2021-02-17T04:22:47.000Z</published>
-    <updated>2021-02-17T11:25:41.994Z</updated>
+    <updated>2021-02-17T15:34:26.431Z</updated>
     
     <summary type="html">
     
@@ -79,13 +79,22 @@
     <link href="https://crunchybiscuits.github.io/2021/02/15/UV%E5%92%8C%E5%83%8F%E7%B4%A0/"/>
     <id>https://crunchybiscuits.github.io/2021/02/15/UV%E5%92%8C%E5%83%8F%E7%B4%A0/</id>
     <published>2021-02-15T13:23:07.000Z</published>
-    <updated>2021-02-15T13:23:07.304Z</updated>
+    <updated>2021-02-17T15:34:14.332Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="UV介绍"><a href="#UV介绍" class="headerlink" title="UV介绍"></a>UV介绍</h1><p>每个模型，都是由一个个的面组成的，而UV纹理，我们可以通俗地看作是由这些所有的面构成的模型的“皮肤”，它的工作方式是将这些三维的“皮肤”二维化分布到一个正方形的画布上，然后通过绘制的贴图，将贴图的细节从正方形的画布投射到三维的空间上。</p><h2 id="在纹理贴图中"><a href="#在纹理贴图中" class="headerlink" title="在纹理贴图中"></a>在纹理贴图中</h2><p>对于纹理贴图而言，一张贴图的U和V坐标的数值范围都是0到1，而不管他的实际分辨率是多少，MAYA会自动把UV纹理坐标换算成贴图的象素坐标。</p><p>“UV”这里是指u,v纹理贴图坐标的简称(它和空间模型的X, Y, Z轴是类似的)，它定义了图片上每个点的位置的信息. 这些点与3D模型是相互联系的， 以决定表面纹理贴图的位置， UV就是将图像上每一个点精确对应到模型物体的表面， 在点与点之间的间隙位置由软件进行图像光滑插值处理， 这就是所谓的UV贴图</p>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;UV介绍&quot;&gt;&lt;a href=&quot;#UV介绍&quot; class=&quot;headerlink&quot; title=&quot;UV介绍&quot;&gt;&lt;/a&gt;UV介绍&lt;/h1&gt;&lt;p&gt;每个模型，都是由一个个的面组成的，而UV纹理，我们可以通俗地看作是由这些所有的面构成的模型的“皮肤”，它的工作方式是将这些三
+      
     
     </summary>
     
     
+    
+      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
     
   </entry>
   
