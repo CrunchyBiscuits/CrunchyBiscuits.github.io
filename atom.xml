@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-02-20T13:53:09.343Z</updated>
+  <updated>2021-02-22T14:14:13.882Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -17,17 +17,51 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>渲染管线流程</title>
-    <link href="https://crunchybiscuits.github.io/2021/02/20/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E6%B5%81%E7%A8%8B/"/>
-    <id>https://crunchybiscuits.github.io/2021/02/20/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E6%B5%81%E7%A8%8B/</id>
-    <published>2021-02-20T13:53:09.000Z</published>
-    <updated>2021-02-20T13:53:09.343Z</updated>
+    <title>keras热力图</title>
+    <link href="https://crunchybiscuits.github.io/2021/02/22/keras%E7%83%AD%E5%8A%9B%E5%9B%BE/"/>
+    <id>https://crunchybiscuits.github.io/2021/02/22/keras%E7%83%AD%E5%8A%9B%E5%9B%BE/</id>
+    <published>2021-02-22T14:12:02.000Z</published>
+    <updated>2021-02-22T14:14:13.882Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="keras-热力图"><a href="#keras-热力图" class="headerlink" title="keras 热力图"></a>keras 热力图</h1><p>主要用于对神经网络训练的参考</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">keras神经网络的可视化</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.applications.vgg16 <span class="keyword">import</span> preprocess_input</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras.models <span class="keyword">import</span> load_model</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> preprocessing</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> backend <span class="keyword">as</span> K</span><br><span class="line"><span class="keyword">from</span> tensorflow.keras <span class="keyword">import</span> models</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line">image_size = <span class="number">224</span></span><br><span class="line"></span><br><span class="line">model_path = <span class="string">&quot;模型地址&quot;</span></span><br><span class="line">img_path = <span class="string">&quot;图片地址&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 加载之前训练好的模型</span></span><br><span class="line">model = load_model(model_path)</span><br><span class="line">image = cv2.imread(img_path)</span><br><span class="line">img_tensor = preprocessing.image.img_to_array(image)</span><br><span class="line">img_tensor = np.expand_dims(img_tensor, axis=<span class="number">0</span>)</span><br><span class="line">img_tensor = preprocess_input(img_tensor)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取最后一层卷积，以(Conv2d)标注的最后一个</span></span><br><span class="line">conv_layer = model.get_layer(<span class="string">&quot;conv2d_93&quot;</span>)</span><br><span class="line">heatmap_model = models.Model([model.inputs], [conv_layer.output, model.output])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取最后一层卷积的梯度</span></span><br><span class="line"><span class="keyword">with</span> tf.GradientTape() <span class="keyword">as</span> gtape:</span><br><span class="line">    conv_output, predictions = heatmap_model(img_tensor)</span><br><span class="line">    loss = predictions[:, np.argmax(predictions[<span class="number">0</span>])]</span><br><span class="line">    grads = gtape.gradient(loss, conv_output)[<span class="number">0</span>]</span><br><span class="line">    pooled_grads = K.mean(grads, axis=(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 热力图归一化</span></span><br><span class="line">heatmap = tf.reduce_mean(tf.multiply(pooled_grads, conv_output), axis=<span class="number">-1</span>)</span><br><span class="line">heatmap = np.maximum(heatmap, <span class="number">0</span>)</span><br><span class="line">max_heat = np.max(heatmap)</span><br><span class="line"><span class="keyword">if</span> max_heat == <span class="number">0</span>:</span><br><span class="line">    max_heat = <span class="number">1e-10</span></span><br><span class="line">heatmap /= max_heat</span><br><span class="line">heatmap = np.uint8(<span class="number">255</span> * heatmap)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 热力图和原图合并</span></span><br><span class="line">img = cv2.imread(img_path)</span><br><span class="line">heatmap1 = cv2.resize(heatmap[<span class="number">0</span>], (img.shape[<span class="number">1</span>], img.shape[<span class="number">0</span>]), interpolation=cv2.INTER_CUBIC)</span><br><span class="line">heatmap1 = np.uint8(<span class="number">255</span>*heatmap1)</span><br><span class="line">heatmap1 = cv2.applyColorMap(heatmap1, cv2.COLORMAP_JET)</span><br><span class="line">frame_out = cv2.addWeighted(img, <span class="number">0.5</span>, heatmap1, <span class="number">0.5</span>, <span class="number">0</span>)</span><br><span class="line">cv2.imwrite(<span class="string">&#x27;热力图保存路径&#x27;</span>, frame_out)</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;finish&quot;</span>)</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;keras-热力图&quot;&gt;&lt;a href=&quot;#keras-热力图&quot; class=&quot;headerlink&quot; title=&quot;keras 热力图&quot;&gt;&lt;/a&gt;keras 热力图&lt;/h1&gt;&lt;p&gt;主要用于对神经网络训练的参考&lt;/p&gt;
+&lt;figure class=&quot;highligh
+      
     
     </summary>
     
     
+    
+      <category term="keras" scheme="https://crunchybiscuits.github.io/tags/keras/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>渲染管线流程</title>
+    <link href="https://crunchybiscuits.github.io/2021/02/20/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E6%B5%81%E7%A8%8B/"/>
+    <id>https://crunchybiscuits.github.io/2021/02/20/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E6%B5%81%E7%A8%8B/</id>
+    <published>2021-02-20T13:53:09.000Z</published>
+    <updated>2021-02-21T06:39:35.156Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="渲染管线流程"><a href="#渲染管线流程" class="headerlink" title="渲染管线流程"></a>渲染管线流程</h1>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;渲染管线流程&quot;&gt;&lt;a href=&quot;#渲染管线流程&quot; class=&quot;headerlink&quot; title=&quot;渲染管线流程&quot;&gt;&lt;/a&gt;渲染管线流程&lt;/h1&gt;
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
     
   </entry>
   
@@ -84,7 +118,7 @@
     <link href="https://crunchybiscuits.github.io/2021/02/15/MVP/"/>
     <id>https://crunchybiscuits.github.io/2021/02/15/MVP/</id>
     <published>2021-02-15T07:37:01.000Z</published>
-    <updated>2021-02-17T03:54:58.650Z</updated>
+    <updated>2021-02-21T06:39:47.375Z</updated>
     
     <content type="html"><![CDATA[<h1 id="MODEL-VIEW-PROJECTION"><a href="#MODEL-VIEW-PROJECTION" class="headerlink" title="MODEL, VIEW, PROJECTION"></a>MODEL, VIEW, PROJECTION</h1><h2 id="Model"><a href="#Model" class="headerlink" title="Model"></a>Model</h2><h2 id="View"><a href="#View" class="headerlink" title="View"></a>View</h2><h2 id="Projection"><a href="#Projection" class="headerlink" title="Projection"></a>Projection</h2>]]></content>
     
@@ -466,30 +500,6 @@
     
     
       <category term="Github" scheme="https://crunchybiscuits.github.io/tags/Github/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MarkdownCheatSheet</title>
-    <link href="https://crunchybiscuits.github.io/2020/07/17/MarkdownCheatSheet/"/>
-    <id>https://crunchybiscuits.github.io/2020/07/17/MarkdownCheatSheet/</id>
-    <published>2020-07-16T17:28:38.000Z</published>
-    <updated>2020-07-18T23:56:45.074Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="常用Markdown语法"><a href="#常用Markdown语法" class="headerlink" title="常用Markdown语法"></a>常用Markdown语法</h1><p>仅列出常用的markdown语法，有不少情况没有列出可参考<a href="https://crunchybiscuits.github.io/2020/07/14/Markdown基础语法/">Markdown基础语法</a></p><table><thead><tr><th>类型</th><th>语法</th></tr></thead><tbody><tr><td>标题</td><td># 一级标题<br>## 二级标题<br>### 三级标题</td></tr><tr><td>加粗</td><td>*<em>文本*</em></td></tr><tr><td>斜体</td><td>*斜体*</td></tr><tr><td>有序列表</td><td>1. first<br>2. second<br>3. third</td></tr><tr><td>无序列表</td><td>- first<br>- second<br>- third</td></tr><tr><td>单行代码</td><td>`代码`</td></tr><tr><td>分隔符</td><td>***</td></tr><tr><td>链接</td><td>[title](<a href="https://example.com">https://example.com</a>)</td></tr><tr><td>图片</td><td>![text](image.jpg)</td></tr><tr><td>块引用</td><td>&gt; 块引用</td></tr></tbody></table>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;常用Markdown语法&quot;&gt;&lt;a href=&quot;#常用Markdown语法&quot; class=&quot;headerlink&quot; title=&quot;常用Markdown语法&quot;&gt;&lt;/a&gt;常用Markdown语法&lt;/h1&gt;&lt;p&gt;仅列出常用的markdown语法，有不少情况没有列出可参考&lt;
-      
-    
-    </summary>
-    
-    
-    
-      <category term="Markdown" scheme="https://crunchybiscuits.github.io/tags/Markdown/"/>
     
   </entry>
   
