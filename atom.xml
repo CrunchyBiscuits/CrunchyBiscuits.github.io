@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-02-22T14:14:13.882Z</updated>
+  <updated>2021-02-23T16:02:05.794Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Docker打包上传训练模型</title>
+    <link href="https://crunchybiscuits.github.io/2021/02/23/Docker%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B/"/>
+    <id>https://crunchybiscuits.github.io/2021/02/23/Docker%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B/</id>
+    <published>2021-02-23T15:53:15.000Z</published>
+    <updated>2021-02-23T16:02:05.794Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Docker打包上传多个训练好的模型"><a href="#Docker打包上传多个训练好的模型" class="headerlink" title="Docker打包上传多个训练好的模型"></a>Docker打包上传多个训练好的模型</h1><h2 id="模型文件路径设置"><a href="#模型文件路径设置" class="headerlink" title="模型文件路径设置"></a>模型文件路径设置</h2><p>pbmodel</p><p>​    ├─model1<br>​        ├─0<br>​            ├─variables<br>​            ├─saved_model.pb<br>​    ├─model2<br>​        ├─0<br>​            ├─variables<br>​            ├─saved_model.pb<br>​    └models.config</p><h2 id="docker脚本设置"><a href="#docker脚本设置" class="headerlink" title="docker脚本设置"></a>docker脚本设置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> keras2tensorflow test.py</span></span><br><span class="line"></span><br><span class="line">base_repo_name=&#x27;tensorflow/serving&#x27; #基础镜像</span><br><span class="line">base_repo_tag=&#x27;latest&#x27;</span><br><span class="line">hub_repo_name=&#x27;hub.xxx.xx/xxx/video_blurred_model_base&#x27;</span><br><span class="line">hub_repo_tag=&#x27;v0.1&#x27;</span><br><span class="line">commit_msg=&#x27;添加花屏检测模型&#x27;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">container_id=`docker run -itd -p 8501:8501 <span class="variable">$&#123;base_repo_name&#125;</span><span class="string">&#x27;:&#x27;</span><span class="variable">$&#123;base_repo_tag&#125;</span> --model_config_file=/models/models.config /bin/bash`</span></span><br><span class="line">container_id=`docker run -itd -p 8501:8501 $&#123;base_repo_name&#125;&#x27;:&#x27;$&#123;base_repo_tag&#125; /bin/bash`</span><br><span class="line">echo &quot;container_id is : &quot;</span><br><span class="line">echo $container_id</span><br><span class="line">docker cp /Users/zzy/PycharmProjects/video-parsing-models/pbmodel/models.config $container_id:/models</span><br><span class="line">docker cp /Users/zzy/PycharmProjects/video-parsing-models/pbmodel/blurred_screen_model $container_id:/models</span><br><span class="line">sha_image_id=`docker commit -m $&#123;commit_msg&#125; $&#123;container_id&#125;`</span><br><span class="line">echo $&#123;sha_image_id&#125;</span><br><span class="line">image_id=($&#123;sha_image_id//sha256:/&#125;) #需要将返回的sha256:image_id进行过滤</span><br><span class="line">docker tag $&#123;image_id&#125; $&#123;hub_repo_name&#125;&#x27;:&#x27;$&#123;hub_repo_tag&#125;</span><br><span class="line">docker push $&#123;hub_repo_name&#125;&#x27;:&#x27;$&#123;hub_repo_tag&#125;</span><br><span class="line">docker restart $&#123;container_id&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure><h2 id="models-config文件设置"><a href="#models-config文件设置" class="headerlink" title="models.config文件设置"></a>models.config文件设置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">model_config_list &#123;</span><br><span class="line">  config &#123;</span><br><span class="line">    name: &#39;blurred_screen_model&#39;</span><br><span class="line">    base_path: &#39;&#x2F;models&#x2F;blurred_screen_model&#39;</span><br><span class="line">    model_platform: &#39;tensorflow&#39;</span><br><span class="line">  &#125;</span><br><span class="line">  config &#123;</span><br><span class="line">    name: &#39;blurred_screen_model2&#39;</span><br><span class="line">    base_path: &#39;&#x2F;models&#x2F;blurred_screen_model2&#39;</span><br><span class="line">    model_platform: &#39;tensorflow&#39;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Docker打包上传多个训练好的模型&quot;&gt;&lt;a href=&quot;#Docker打包上传多个训练好的模型&quot; class=&quot;headerlink&quot; title=&quot;Docker打包上传多个训练好的模型&quot;&gt;&lt;/a&gt;Docker打包上传多个训练好的模型&lt;/h1&gt;&lt;h2 id=&quot;模
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Docker" scheme="https://crunchybiscuits.github.io/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>keras热力图</title>
@@ -475,31 +499,6 @@
     
     
       <category term="BigO" scheme="https://crunchybiscuits.github.io/tags/BigO/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>PicGo+Github搭建图床</title>
-    <link href="https://crunchybiscuits.github.io/2020/07/19/PicGo-Github%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/"/>
-    <id>https://crunchybiscuits.github.io/2020/07/19/PicGo-Github%E6%90%AD%E5%BB%BA%E5%9B%BE%E5%BA%8A/</id>
-    <published>2020-07-18T16:26:32.000Z</published>
-    <updated>2020-07-25T02:10:41.804Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文写于2020-07-19，请参考时考虑时间以及软件版本</p><p>PicGo+Github搭建图床，方便图片上传、管理以及方便markdown的引用，<a href="https://juejin.im/entry/5c4ec5aaf265da614420689f">文章参考</a></p><h2 id="Github图床设置"><a href="#Github图床设置" class="headerlink" title="Github图床设置"></a>Github图床设置</h2><p>进入自己的Github账户，创建新的Repository并命名, 因为这里笔者已经创建过Image-Host的库，所以显示重名。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github_2020-07-19_00-48-53.jpg" alt="创建新的Repository"></p><p>接着进入账户设置</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github1_2020-07-19_00-53-51.jpg" alt="进入账户设置"></p><p>进入Developer settings</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github2_2020-07-19_00-56-12.jpg" alt="Developer settings"></p><p>点击Generate new token</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github3_2020-07-19_01-00-54.jpg" alt="Generate new token"></p><p>为token添加描述，并点选repo, 接着点击最下方的Generate token按钮即可</p><p><strong>注意：创建好后会生成一串token，此token只在github上显示一次，请妥善保存</strong></p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/github4_2020-07-19_01-04-59.jpg" alt="token设置"></p><h2 id="PicGo"><a href="#PicGo" class="headerlink" title="PicGo"></a>PicGo</h2><p>PicGo为免费开源图床管理工具，<a href="https://github.com/Molunerfinn/PicGo">下载地址在这</a><br>Windows, Mac, Linux系统都有支持<br>并且支持多种平台，如阿里云，腾讯云等</p><p>本文使用PicGo 2.2.2 ，下载好后如图所示<br><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/picgo_2020-07-19_00-35-15.jpg" alt="PicGo界面"></p><p>点开PicGo设置，因为仅使用Github作为图床，所以将剩余的平台显示关闭</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/picgo1_2020-07-19_00-40-03.jpg" alt="PicGo设置"></p><p>点击打开图床设置</p><ul><li>设定仓库名：Github账户名/仓库名</li><li>设定分支名：需填写为master</li><li>设定Token：将在github中生成的token填入</li><li>存储路径：可按自己意愿设定，之后会在github库中创建对应名称文件夹，下图会创建img文件夹</li><li>自定义域名：用于图片的引用和访问，<strong>注意格式必须为<code>https://raw.githubusercontent.com/</code>账户名/仓库名/分支名</strong>，图中为<code>https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master</code></li></ul><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/picgo2_2020-07-19_01-10-53.jpg" alt="图床设置"></p><p>设定完成便可方便的上传以及管理图片</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;本文写于2020-07-19，请参考时考虑时间以及软件版本&lt;/p&gt;
-&lt;p&gt;PicGo+Github搭建图床，方便图片上传、管理以及方便markdown的引用，&lt;a href=&quot;https://juejin.im/entry/5c4ec5aaf265da614420689f&quot;
-      
-    
-    </summary>
-    
-    
-    
-      <category term="Github" scheme="https://crunchybiscuits.github.io/tags/Github/"/>
     
   </entry>
   
