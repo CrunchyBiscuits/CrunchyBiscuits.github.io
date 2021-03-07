@@ -65,30 +65,6 @@
   </entry>
   
   <entry>
-    <title>keras项目知识点梳理</title>
-    <link href="https://crunchybiscuits.github.io/2021/02/27/keras%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/"/>
-    <id>https://crunchybiscuits.github.io/2021/02/27/keras%E9%A1%B9%E7%9B%AE%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A2%B3%E7%90%86/</id>
-    <published>2021-02-26T16:30:53.000Z</published>
-    <updated>2021-02-26T16:31:26.311Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="keras项目使用中遇到的东西"><a href="#keras项目使用中遇到的东西" class="headerlink" title="keras项目使用中遇到的东西"></a>keras项目使用中遇到的东西</h1><h2 id="CNN"><a href="#CNN" class="headerlink" title="CNN"></a>CNN</h2><p>训练步骤<br>Step 1: 用随机数初始化所有的滤波器和参数/权重<br>Step 2: 网络将训练图片作为输入，执行前向步骤（卷积，ReLU，池化以及全连接层的前向传播）并计算每个类别的对应<br>输出概率。<br>假设船图的输出概率是[0.2, 0.4, 0.1, 0.3]<br>因为第一个训练样本的权重都是随机的，所以这个输出概率也跟随机的差不多<br>Step 3: 计算输出层的总误差（4类别之和）</p><p>总误差=∑12(目标概率−输出概率)2总误差=∑12(目标概率−输出概率)2<br>Step 4: 反向传播算法计算误差相对于所有权重的梯度，并用梯度下降法更新所有的滤波器/权重和参数的值，以使输出误差最小化。</p><p>权重的调整程度与其对总误差的贡献成正比。<br>当同一图像再次被输入，这次的输出概率可能是[0.1, 0.1, 0.7, 0.1]，与目标[0, 0, 1, 0]更接近了。<br>这说明我们的神经网络已经学习着分类特定图片了，学习的方式是调整权重/滤波器以降低输出误差。<br>如滤波器个数、滤波器尺寸、网络架构这些参数，是在Step 1之前就已经固定的，且不会在训练过程中改变——只有滤波矩阵和神经元突触权重会更新。<br>以上步骤训练了卷积网络——本质上就是优化所有的权重和参数，使其能够正确地分类训练集里的图片。</p><h2 id="inception-v3"><a href="#inception-v3" class="headerlink" title="inception v3"></a>inception v3</h2><h2 id="globalaveragepooling2d"><a href="#globalaveragepooling2d" class="headerlink" title="globalaveragepooling2d"></a>globalaveragepooling2d</h2><p>空间池化（也称为亚采样或下采样）降低了每个特征映射的维度，但是保留了最重要的信息，空间池可以有多种形式：最大（Max）,平均（Average），求和（Sum）以最大池化为例，我们定义了空间上的邻域（2x2的窗）并且从纠正特征映射中取出窗里最大的元素。除了取最大值以额外，我们也可以取平均值（平均池化）或者把窗里所有元素加起来。实际上，最大池化已经显示了最好的成效。</p><p>池化的功能室逐步减少输入表征的空间尺寸。特别地，池化</p><ul><li>使输入表征（特征维度）更小而易操作</li><li>减少网络中的参数与计算数量，从而遏制过拟合</li><li>增强网络对输入图像中的小变形、扭曲、平移的鲁棒性（输入里的微小扭曲不会改变池化输出——因为我们在局部邻域已经取了最大值/平均值）。</li><li>帮助我们获得不因尺寸而改变的等效图片表征。这非常有用，因为这样我们就可以探测到图片里的物体，不论那个物体在哪。</li></ul><h2 id="dense"><a href="#dense" class="headerlink" title="dense"></a>dense</h2><p>全连接表示上一层的每个神经元都和下一层的每一个神经元是相连的<br>也是学习特征之间非线性组合的方法<br>输出之和为1</p><p>偏置向量</p><h2 id="Flatten"><a href="#Flatten" class="headerlink" title="Flatten()"></a>Flatten()</h2><p>Flatten层用来将输入“压平”，即把多维的输入一维化，常用在从卷积层到全连接层的过渡。Flatten不影响batch的大小</p><h2 id="dropout"><a href="#dropout" class="headerlink" title="dropout"></a>dropout</h2><p>为输入数据施加Dropout。Dropout将在训练过程中每次更新参数时随机断开一定百分比（rate）的输入神经元，Dropout层用于防止过拟合。</p><h2 id="softmax"><a href="#softmax" class="headerlink" title="softmax"></a>softmax</h2><p>Softmax函数用于将分类结果归一化，形成一个概率分布。作用类似于二分类中的Sigmoid函数。</p><h2 id="sgd"><a href="#sgd" class="headerlink" title="sgd"></a>sgd</h2><h2 id="crossentropy"><a href="#crossentropy" class="headerlink" title="crossentropy"></a>crossentropy</h2><p>交叉熵函数可以捕捉到预测结果的差异</p><p>过程：</p><ol><li>神经网络最后一层获得每个类别的分数</li><li>得分经过sigmoid或者softmax函数获得概率输出</li><li>模型预测的类别和真实类别的独热编码进行交叉熵损失函数的计算</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;keras项目使用中遇到的东西&quot;&gt;&lt;a href=&quot;#keras项目使用中遇到的东西&quot; class=&quot;headerlink&quot; title=&quot;keras项目使用中遇到的东西&quot;&gt;&lt;/a&gt;keras项目使用中遇到的东西&lt;/h1&gt;&lt;h2 id=&quot;CNN&quot;&gt;&lt;a href=
-      
-    
-    </summary>
-    
-    
-    
-      <category term="keras" scheme="https://crunchybiscuits.github.io/tags/keras/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Docker打包上传训练模型</title>
     <link href="https://crunchybiscuits.github.io/2021/02/23/Docker%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B/"/>
     <id>https://crunchybiscuits.github.io/2021/02/23/Docker%E6%89%93%E5%8C%85%E4%B8%8A%E4%BC%A0%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B/</id>
@@ -496,6 +472,31 @@
       
       
         &lt;h1 id=&quot;Big-O-练习&quot;&gt;&lt;a href=&quot;#Big-O-练习&quot; class=&quot;headerlink&quot; title=&quot;Big O 练习&quot;&gt;&lt;/a&gt;Big O 练习&lt;/h1&gt;&lt;h2 id=&quot;例一&quot;&gt;&lt;a href=&quot;#例一&quot; class=&quot;headerlink&quot; titl
+      
+    
+    </summary>
+    
+    
+    
+      <category term="BigO" scheme="https://crunchybiscuits.github.io/tags/BigO/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>BigO基础介绍02</title>
+    <link href="https://crunchybiscuits.github.io/2020/07/23/BigO%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D02/"/>
+    <id>https://crunchybiscuits.github.io/2020/07/23/BigO%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D02/</id>
+    <published>2020-07-23T10:12:45.000Z</published>
+    <updated>2020-07-23T08:19:44.466Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Big-O-基础介绍-二"><a href="#Big-O-基础介绍-二" class="headerlink" title="Big O 基础介绍(二)"></a>Big O 基础介绍(二)</h1><p>此文参考《程序员面试金典》(第六版)第六章。</p><h2 id="多项式算法的加和乘"><a href="#多项式算法的加和乘" class="headerlink" title="多项式算法的加和乘"></a>多项式算法的加和乘</h2><p>算法中常见的分步形式如下:</p><p><strong>O( A + B )</strong> :</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> a : arrA)&#123;</span><br><span class="line">    print(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> b : arrB)&#123;</span><br><span class="line">    print(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>O( A * B )</strong>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> a : arrA)&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> b : arrB)&#123;</span><br><span class="line">        print(a + <span class="string">&quot;,&quot;</span> + b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>第一个例子，先遍历A数组，再遍历B数组，所以总数量是O( A + B )。</p><p>第二个例子，对A数组的每个元素都遍历B数组，所以总数量是O( A * B )。</p><ul><li>”先做这个，再做那个”的形式，就是加</li><li>“对这个的每个做那个”的形式，就是乘</li></ul><h2 id="分摊时间"><a href="#分摊时间" class="headerlink" title="分摊时间"></a>分摊时间</h2><p>在计算时间复杂度的时候常常会碰到最坏情况偶尔会出现，一旦发生会消耗很多资源，但是发生之后很长一段时间不会发生，因此需要兼顾正常情况和最坏情况，将时间进行”分摊“。</p><p>例如Java中<code>ArrayList</code>能够灵活的改变大小，能够随着你的插入进行扩容。</p><p><code>ArrayList</code>容量达到限制的时候会创建一个双倍容量的数组，将元素复制到新的数组里面。</p><p>那么描述<code>ArrayList</code>的插入时间，当数组没有满的时候，插入就是O(1)。</p><p>当数组满了，如果数组大小为N，那么需要扩容到2N，并把旧的值复制过去，那么插入就需要O(N)。</p><p>那么”分摊时间“该怎么计算？</p><p>假设需要插入N个元素，<code>ArrayList</code>数组的大小为2的幂数，<strong>当插入一个元素便扩容两倍</strong>。当元素是N的时候，以1，2，4，8，16，32……，N的数组大小成倍的扩容。每次操作需要复制1，2，4，8，16，……，N个元素。</p><p>那么消耗便是1 + 2 + 4 + 8 + 16 + ··· + N的和，从右往左计算便是 N + N/2 + N/4 + N/8 + ··· + 1的和，这个和约等于2N。</p><p>因此，N次插入需要的时间便是O(2N)， 即每次插入的分摊时间为O(1)。</p><h2 id="Log-N-运行时间"><a href="#Log-N-运行时间" class="headerlink" title="Log N 运行时间"></a>Log N 运行时间</h2><p>以二分查找为例。如果一个排序数组的长度为N，目标值为x。首先比较x和中值的大小，如果等于就直接返回，如果x小于便搜索数组中值左边的部分，如果x大于中值便搜索右边的部分。</p><p>开始的时候有N个元素，搜索一次后便是N/2，接着是N/4，直到找到目标或者需要搜索的元素变成1。</p><p>假设有N个元素，总的运行时间便是从N到1一共搜索了多少次。</p><p>如果开始有32个元素</p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">N = 32</span><br><span class="line">N = 16 除以2</span><br><span class="line">N = 8  除以2</span><br><span class="line">N = 4  除以2</span><br><span class="line">N = 2  除以2</span><br><span class="line">N = 1  除以2</span><br></pre></td></tr></table></figure><p>从32到1，需要5次</p><p>如果从1开始看，从1到32则需要2^5</p><p>因此得到2^k = N，k = log2(N)</p><p>所以得到运行时间O(logN)</p><p>平衡二叉搜索树中也有同样的情况，每次搜索便将规模减半，最坏情况为平衡二叉搜索树的高度，也是O(logN)。</p><h2 id="递归运行时间"><a href="#递归运行时间" class="headerlink" title="递归运行时间"></a>递归运行时间</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &lt;= <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> f(n - <span class="number">1</span>) + f(n - <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>通过模拟执行来显示运行时间，如果我们调用f(4)，那么会调用f(3)两次，每个f(3)又会调用f(2)两次，每个f(2)又会调用f(1)两次。如下图显示的节点展开。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/bigo4.jpg" alt="递归节点显示"></p><p>图中一共展开了多少节点？</p><table><thead><tr><th>层</th><th>节点数</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>2 * 上一层节点数 = 2 * 1 = 2 = 2^1</td></tr><tr><td>2</td><td>2 * 上一层节点数 = 2 * 2 = 4 = 2^2</td></tr><tr><td>3</td><td>2 * 上一层节点数 = 2 * 4 = 8 = 2^3</td></tr></tbody></table><p>所以展开是2^0 + 2^1 + 2^2 + 2^3  =  2^4 -1 </p><p>扩展到N则是2^0 + 2^1 + 2^2 + 2^3 + ··· + 2^N = 2^(N+1) - 1</p><p>因此时间复杂度为O(2^(N+1) - 1)舍弃掉常数项为O(2^N)</p><p>常见递归中复杂度通常为，O(分支数^递归深度)，偶尔也有特殊情况。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Big-O-基础介绍-二&quot;&gt;&lt;a href=&quot;#Big-O-基础介绍-二&quot; class=&quot;headerlink&quot; title=&quot;Big O 基础介绍(二)&quot;&gt;&lt;/a&gt;Big O 基础介绍(二)&lt;/h1&gt;&lt;p&gt;此文参考《程序员面试金典》(第六版)第六章。&lt;/p&gt;
+&lt;
       
     
     </summary>
