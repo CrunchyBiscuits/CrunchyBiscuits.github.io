@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-03-02T11:42:09.442Z</updated>
+  <updated>2021-03-20T05:31:20.733Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>unity shader代码结构</title>
+    <link href="https://crunchybiscuits.github.io/2021/03/20/shader%E7%BB%93%E6%9E%84/"/>
+    <id>https://crunchybiscuits.github.io/2021/03/20/shader%E7%BB%93%E6%9E%84/</id>
+    <published>2021-03-19T16:14:00.000Z</published>
+    <updated>2021-03-20T05:31:20.733Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Unity-Shader基础代码结构"><a href="#Unity-Shader基础代码结构" class="headerlink" title="Unity Shader基础代码结构"></a>Unity Shader基础代码结构</h1><p>部分资料取自冯乐乐的《Unity Shader入门精要》</p><h2 id="名字"><a href="#名字" class="headerlink" title="名字"></a>名字</h2><p>在shader第一行我们需要指定unity shader的名字，名字可以通过“/”来进行层次的划分，例如“Custom/TestShader”</p><p>在unity的材质面板中就能在Custom标签那一栏中找到TestShader</p><p><img src= "/img/loading.gif" data-lazy-src="img/shader%E7%BB%93%E6%9E%84.jpg" alt="材质面板显示"></p><p><strong>语法：</strong></p><figure class="highlight plain"><figcaption><span>shader</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Custom&#x2F;TestShader&quot;&#123;&#125;</span><br></pre></td></tr></table></figure><h2 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h2><p>在这里设置需要unity材质面板中能够方便调整的各种属性</p><p>这里的属性包含三个部分：</p><ol><li>名字：名字主要是在unity shader中访问需要的名字，通常是以”_”开始</li><li>显示名称：这里的名称是在unity材质面板中显示的名字</li><li>类型：类型则指定了unity shader中这些属性的类型，并且我们需要给这些属性提供默认值</li></ol><p>Properties中支持以下类型：</p><table><thead><tr><th>属性类型</th><th>例子</th></tr></thead><tbody><tr><td>Int</td><td>_Number (“Number”, Int) = 2</td></tr><tr><td>Float</td><td>_Intensity (“Intensity”, Float) = 1.5</td></tr><tr><td>Range(min, max)</td><td>_SideRange (“SideRange”, Range(0.0, 5.0)) = 3.0</td></tr><tr><td>Color</td><td>_RimColor (“RimColor”, Color) = (1,1,1,1)</td></tr><tr><td>Vector</td><td>_LightDir (“LightDir”, Vector) = (2,3,6,1)</td></tr><tr><td>2D</td><td>_2DTex (“2D”, 2D) = “”{}</td></tr><tr><td>Cube</td><td>_CubeTex (“Cube”, Cube) = “white”{}</td></tr><tr><td>3D</td><td>_3DTex (“3D”, 3D) = “white”{}</td></tr></tbody></table><h2 id="Subshader"><a href="#Subshader" class="headerlink" title="Subshader"></a>Subshader</h2><p>每个unity shader可以包含多个subshader，在加载shader的时候会扫描所有的subshader模块，然后选择第一个能够使用的subshader。如果都不行那么就会使用Fallback定义的unity shader。subshader和pass中都可以包含Tags和RenderSetup，如果设置在subshader中那么将适用于所有的pass</p><p><strong>subshader结构：</strong></p><figure class="highlight plain"><figcaption><span>shader</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">SubShader&#123;</span><br><span class="line">    &#x2F;&#x2F; 可选部分</span><br><span class="line">    [Tags]</span><br><span class="line">    </span><br><span class="line">    [RenderSetup]</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; pass定义，可以有多个pass</span><br><span class="line">    &#x2F;&#x2F; 第一个pass</span><br><span class="line">    Pass&#123;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &#x2F;&#x2F; 第二个pass</span><br><span class="line">    Pass&#123;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h3 id="RenderSetup"><a href="#RenderSetup" class="headerlink" title="RenderSetup"></a>RenderSetup</h3><p>提供一些列渲染状态的设置，例如是否开启混合，开启深度测试等等</p><table><thead><tr><th>状态名称</th><th>设置指令</th><th>解释</th></tr></thead><tbody><tr><td>Cull</td><td>Cull Back|Front|Off</td><td>设置剔除模式：背面/正面/关闭</td></tr><tr><td>ZTest</td><td>ZTest Less|Greater|LEqual|GEqual|Equal|NotEqual|Always</td><td>设置深度测试使用函数</td></tr><tr><td>ZWrite</td><td>ZWrite On|Off</td><td>深度写入开关</td></tr><tr><td>Blend</td><td>Blend SrcFactor DstFactor</td><td>混合模式设置</td></tr></tbody></table><p>ZTest参数解释：</p><ul><li>LEqual：小于等于</li><li>GEqual：大于等于</li><li>Always：无论如何都通过</li></ul><h3 id="Tags"><a href="#Tags" class="headerlink" title="Tags"></a>Tags</h3><p>Tags是以键值对的形式存在的，主要是告诉渲染引擎，希望怎样来渲染这个对象</p><p><strong>标签结构</strong></p><figure class="highlight plain"><figcaption><span>shader</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Tags &#123;&quot;TagName1&quot;&#x3D;&quot;Value1&quot; &quot;TagName2&quot;&#x3D;&quot;Value2&quot;&#125;</span><br></pre></td></tr></table></figure><p><strong>常用的两种标签类型</strong></p><table><thead><tr><th>标签类型</th><th>说明</th><th></th></tr></thead><tbody><tr><td>Queue</td><td>控制渲染顺序，指定渲染队列</td><td>Tags {“Queue”=”Transparent”}</td></tr><tr><td>RenderType</td><td>对着色器进行分类，例如不透明和透明着色器，可用于Shader replacement</td><td>Tags {“RenderType”=”Opaque”}</td></tr></tbody></table><h2 id="Fallback"><a href="#Fallback" class="headerlink" title="Fallback"></a>Fallback</h2><p>Fallback用于告诉unity如果所有subshader都不能用那么就用这里这个，Fallback还可用于阴影的投射</p><p>Fallback “shader名字”</p><p>Fallback off</p><hr><p>最终unity shader大致结构如下：</p><figure class="highlight plain"><figcaption><span>shader</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Custom&#x2F;SimpleShader&quot;&#123;</span><br><span class="line">    Properties&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    SubShader&#123;</span><br><span class="line">        pass&#123;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Fallback &quot;Diffuse&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Unity-Shader基础代码结构&quot;&gt;&lt;a href=&quot;#Unity-Shader基础代码结构&quot; class=&quot;headerlink&quot; title=&quot;Unity Shader基础代码结构&quot;&gt;&lt;/a&gt;Unity Shader基础代码结构&lt;/h1&gt;&lt;p&gt;部分资料取自
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker常用指令</title>
@@ -472,31 +496,6 @@
       
       
         &lt;h1 id=&quot;Big-O-练习&quot;&gt;&lt;a href=&quot;#Big-O-练习&quot; class=&quot;headerlink&quot; title=&quot;Big O 练习&quot;&gt;&lt;/a&gt;Big O 练习&lt;/h1&gt;&lt;h2 id=&quot;例一&quot;&gt;&lt;a href=&quot;#例一&quot; class=&quot;headerlink&quot; titl
-      
-    
-    </summary>
-    
-    
-    
-      <category term="BigO" scheme="https://crunchybiscuits.github.io/tags/BigO/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>BigO基础介绍02</title>
-    <link href="https://crunchybiscuits.github.io/2020/07/23/BigO%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D02/"/>
-    <id>https://crunchybiscuits.github.io/2020/07/23/BigO%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D02/</id>
-    <published>2020-07-23T10:12:45.000Z</published>
-    <updated>2020-07-23T08:19:44.466Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Big-O-基础介绍-二"><a href="#Big-O-基础介绍-二" class="headerlink" title="Big O 基础介绍(二)"></a>Big O 基础介绍(二)</h1><p>此文参考《程序员面试金典》(第六版)第六章。</p><h2 id="多项式算法的加和乘"><a href="#多项式算法的加和乘" class="headerlink" title="多项式算法的加和乘"></a>多项式算法的加和乘</h2><p>算法中常见的分步形式如下:</p><p><strong>O( A + B )</strong> :</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> a : arrA)&#123;</span><br><span class="line">    print(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> b : arrB)&#123;</span><br><span class="line">    print(b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>O( A * B )</strong>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> a : arrA)&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> b : arrB)&#123;</span><br><span class="line">        print(a + <span class="string">&quot;,&quot;</span> + b);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>第一个例子，先遍历A数组，再遍历B数组，所以总数量是O( A + B )。</p><p>第二个例子，对A数组的每个元素都遍历B数组，所以总数量是O( A * B )。</p><ul><li>”先做这个，再做那个”的形式，就是加</li><li>“对这个的每个做那个”的形式，就是乘</li></ul><h2 id="分摊时间"><a href="#分摊时间" class="headerlink" title="分摊时间"></a>分摊时间</h2><p>在计算时间复杂度的时候常常会碰到最坏情况偶尔会出现，一旦发生会消耗很多资源，但是发生之后很长一段时间不会发生，因此需要兼顾正常情况和最坏情况，将时间进行”分摊“。</p><p>例如Java中<code>ArrayList</code>能够灵活的改变大小，能够随着你的插入进行扩容。</p><p><code>ArrayList</code>容量达到限制的时候会创建一个双倍容量的数组，将元素复制到新的数组里面。</p><p>那么描述<code>ArrayList</code>的插入时间，当数组没有满的时候，插入就是O(1)。</p><p>当数组满了，如果数组大小为N，那么需要扩容到2N，并把旧的值复制过去，那么插入就需要O(N)。</p><p>那么”分摊时间“该怎么计算？</p><p>假设需要插入N个元素，<code>ArrayList</code>数组的大小为2的幂数，<strong>当插入一个元素便扩容两倍</strong>。当元素是N的时候，以1，2，4，8，16，32……，N的数组大小成倍的扩容。每次操作需要复制1，2，4，8，16，……，N个元素。</p><p>那么消耗便是1 + 2 + 4 + 8 + 16 + ··· + N的和，从右往左计算便是 N + N/2 + N/4 + N/8 + ··· + 1的和，这个和约等于2N。</p><p>因此，N次插入需要的时间便是O(2N)， 即每次插入的分摊时间为O(1)。</p><h2 id="Log-N-运行时间"><a href="#Log-N-运行时间" class="headerlink" title="Log N 运行时间"></a>Log N 运行时间</h2><p>以二分查找为例。如果一个排序数组的长度为N，目标值为x。首先比较x和中值的大小，如果等于就直接返回，如果x小于便搜索数组中值左边的部分，如果x大于中值便搜索右边的部分。</p><p>开始的时候有N个元素，搜索一次后便是N/2，接着是N/4，直到找到目标或者需要搜索的元素变成1。</p><p>假设有N个元素，总的运行时间便是从N到1一共搜索了多少次。</p><p>如果开始有32个元素</p><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">N = 32</span><br><span class="line">N = 16 除以2</span><br><span class="line">N = 8  除以2</span><br><span class="line">N = 4  除以2</span><br><span class="line">N = 2  除以2</span><br><span class="line">N = 1  除以2</span><br></pre></td></tr></table></figure><p>从32到1，需要5次</p><p>如果从1开始看，从1到32则需要2^5</p><p>因此得到2^k = N，k = log2(N)</p><p>所以得到运行时间O(logN)</p><p>平衡二叉搜索树中也有同样的情况，每次搜索便将规模减半，最坏情况为平衡二叉搜索树的高度，也是O(logN)。</p><h2 id="递归运行时间"><a href="#递归运行时间" class="headerlink" title="递归运行时间"></a>递归运行时间</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n &lt;= <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> f(n - <span class="number">1</span>) + f(n - <span class="number">1</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>通过模拟执行来显示运行时间，如果我们调用f(4)，那么会调用f(3)两次，每个f(3)又会调用f(2)两次，每个f(2)又会调用f(1)两次。如下图显示的节点展开。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/bigo4.jpg" alt="递归节点显示"></p><p>图中一共展开了多少节点？</p><table><thead><tr><th>层</th><th>节点数</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>2 * 上一层节点数 = 2 * 1 = 2 = 2^1</td></tr><tr><td>2</td><td>2 * 上一层节点数 = 2 * 2 = 4 = 2^2</td></tr><tr><td>3</td><td>2 * 上一层节点数 = 2 * 4 = 8 = 2^3</td></tr></tbody></table><p>所以展开是2^0 + 2^1 + 2^2 + 2^3  =  2^4 -1 </p><p>扩展到N则是2^0 + 2^1 + 2^2 + 2^3 + ··· + 2^N = 2^(N+1) - 1</p><p>因此时间复杂度为O(2^(N+1) - 1)舍弃掉常数项为O(2^N)</p><p>常见递归中复杂度通常为，O(分支数^递归深度)，偶尔也有特殊情况。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;Big-O-基础介绍-二&quot;&gt;&lt;a href=&quot;#Big-O-基础介绍-二&quot; class=&quot;headerlink&quot; title=&quot;Big O 基础介绍(二)&quot;&gt;&lt;/a&gt;Big O 基础介绍(二)&lt;/h1&gt;&lt;p&gt;此文参考《程序员面试金典》(第六版)第六章。&lt;/p&gt;
-&lt;
       
     
     </summary>
