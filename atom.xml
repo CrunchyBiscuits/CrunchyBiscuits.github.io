@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-03-21T16:27:57.151Z</updated>
+  <updated>2021-03-21T16:32:17.620Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://crunchybiscuits.github.io/2021/03/22/GAMES202%E4%BD%9C%E4%B8%9A0/"/>
     <id>https://crunchybiscuits.github.io/2021/03/22/GAMES202%E4%BD%9C%E4%B8%9A0/</id>
     <published>2021-03-21T16:25:10.000Z</published>
-    <updated>2021-03-21T16:27:57.151Z</updated>
+    <updated>2021-03-21T16:32:17.620Z</updated>
     
     <content type="html"><![CDATA[<h1 id="GAMES202作业0"><a href="#GAMES202作业0" class="headerlink" title="GAMES202作业0"></a>GAMES202作业0</h1><p>本次作业主要为熟悉框架，通过框架实现blinn-phong，无特殊要求</p><p>大致步骤：</p><ol><li>使用GLSL编写对应vert和frag shader</li><li>将shader的字符串形式传递到javascript实现的PhongMaterial类中</li><li>在index.html中导入</li><li>将框架中原来使用的Material替换为编写好的PhongMaterial类</li></ol><h3 id="最初效果"><a href="#最初效果" class="headerlink" title="最初效果"></a>最初效果</h3><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/202assign0_1.jpg" alt="渲染方程"></p><h3 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h3><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/202assign0_2.jpg" alt="渲染方程"></p>]]></content>
     
