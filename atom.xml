@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-03-25T12:24:47.913Z</updated>
+  <updated>2021-03-28T18:09:58.997Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -17,17 +17,27 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>HDRP场景模拟</title>
-    <link href="https://crunchybiscuits.github.io/2021/03/25/HDRP%E5%9C%BA%E6%99%AF%E6%A8%A1%E6%8B%9F/"/>
-    <id>https://crunchybiscuits.github.io/2021/03/25/HDRP%E5%9C%BA%E6%99%AF%E6%A8%A1%E6%8B%9F/</id>
+    <title>次世代锤子模型制作过程（更新中）</title>
+    <link href="https://crunchybiscuits.github.io/2021/03/25/%E6%AC%A1%E4%B8%96%E4%BB%A3%E9%94%A4%E5%AD%90%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B/"/>
+    <id>https://crunchybiscuits.github.io/2021/03/25/%E6%AC%A1%E4%B8%96%E4%BB%A3%E9%94%A4%E5%AD%90%E5%88%B6%E4%BD%9C%E8%BF%87%E7%A8%8B/</id>
     <published>2021-03-25T12:24:47.000Z</published>
-    <updated>2021-03-25T12:24:47.913Z</updated>
+    <updated>2021-03-28T18:09:58.997Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="制作过程"><a href="#制作过程" class="headerlink" title="制作过程"></a>制作过程</h1><p>主要使用工具3dmax，zbrush，substance painter</p><h2 id="3dmax"><a href="#3dmax" class="headerlink" title="3dmax"></a>3dmax</h2><p>目标锤子如下：</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/hammer1.jpg" alt=""></p><p>首先在3dmax中建模</p><p>其中用到的操作，切角（锤子两边突起，需要做些裂缝的时候显得比较精致），镜像(做一半就行)</p><p>最开始，效果如下：</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/hammer2.jpg" alt=""></p><h2 id="zbrush"><a href="#zbrush" class="headerlink" title="zbrush"></a>zbrush</h2><h2 id="substance-painter"><a href="#substance-painter" class="headerlink" title="substance painter"></a>substance painter</h2>]]></content>
     
     <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;制作过程&quot;&gt;&lt;a href=&quot;#制作过程&quot; class=&quot;headerlink&quot; title=&quot;制作过程&quot;&gt;&lt;/a&gt;制作过程&lt;/h1&gt;&lt;p&gt;主要使用工具3dmax，zbrush，substance painter&lt;/p&gt;
+&lt;h2 id=&quot;3dmax&quot;&gt;&lt;a hre
+      
     
     </summary>
     
     
+    
+      <category term="modelling" scheme="https://crunchybiscuits.github.io/tags/modelling/"/>
     
   </entry>
   
