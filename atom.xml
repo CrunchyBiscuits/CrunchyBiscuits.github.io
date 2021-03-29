@@ -91,33 +91,6 @@
   </entry>
   
   <entry>
-    <title>字节后端开发暑期实习一面+二面记录</title>
-    <link href="https://crunchybiscuits.github.io/2021/03/23/%E5%AD%97%E8%8A%82%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E4%B8%80%E9%9D%A2%E8%AE%B0%E5%BD%95/"/>
-    <id>https://crunchybiscuits.github.io/2021/03/23/%E5%AD%97%E8%8A%82%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E4%B8%80%E9%9D%A2%E8%AE%B0%E5%BD%95/</id>
-    <published>2021-03-23T12:30:09.000Z</published>
-    <updated>2021-03-26T08:44:10.043Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="面试记录"><a href="#面试记录" class="headerlink" title="面试记录"></a>面试记录</h1><p>一面</p><ol><li>java jvm 垃圾回收</li><li>arraylist、linked list区别</li><li>hashmap、hashtable区别</li><li>hashmap,concurrent hashmap</li><li>Arraylist源码</li><li>软链接和硬链接</li><li>四次挥手第四次可能产生的问题</li><li>GET和POST区别</li><li>url在浏览器中的过程</li><li>jvm优化有了解么</li><li>docker是什么</li><li>docker image是什么</li><li>dfs，bfs区别优劣，使用场景</li><li>斐波那契</li></ol><p>二面</p><ol><li>https和http</li><li>加密算法分类</li><li>进程之间的通信</li><li>mysql背后的引擎</li><li>遍历的优化 (做了挺久)</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;面试记录&quot;&gt;&lt;a href=&quot;#面试记录&quot; class=&quot;headerlink&quot; title=&quot;面试记录&quot;&gt;&lt;/a&gt;面试记录&lt;/h1&gt;&lt;p&gt;一面&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;java jvm 垃圾回收&lt;/li&gt;
-&lt;li&gt;arraylist、linked list区别
-      
-    
-    </summary>
-    
-    
-    
-      <category term="面试" scheme="https://crunchybiscuits.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
-    
-  </entry>
-  
-  <entry>
     <title>MatCap制作薄膜干涉效果</title>
     <link href="https://crunchybiscuits.github.io/2021/03/23/MatCap%E6%95%88%E6%9E%9C%E5%88%B6%E4%BD%9C/"/>
     <id>https://crunchybiscuits.github.io/2021/03/23/MatCap%E6%95%88%E6%9E%9C%E5%88%B6%E4%BD%9C/</id>
@@ -238,6 +211,33 @@
   </entry>
   
   <entry>
+    <title>字节后端开发暑期实习一面+二面记录</title>
+    <link href="https://crunchybiscuits.github.io/2021/03/05/%E5%AD%97%E8%8A%82%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E4%B8%80%E9%9D%A2%E8%AE%B0%E5%BD%95/"/>
+    <id>https://crunchybiscuits.github.io/2021/03/05/%E5%AD%97%E8%8A%82%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91%E6%9A%91%E6%9C%9F%E5%AE%9E%E4%B9%A0%E4%B8%80%E9%9D%A2%E8%AE%B0%E5%BD%95/</id>
+    <published>2021-03-05T12:30:09.000Z</published>
+    <updated>2021-03-29T12:52:28.707Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="面试记录"><a href="#面试记录" class="headerlink" title="面试记录"></a>面试记录</h1><p>一面</p><ol><li>java jvm 垃圾回收</li><li>arraylist、linked list区别</li><li>hashmap、hashtable区别</li><li>hashmap,concurrent hashmap</li><li>Arraylist源码</li><li>软链接和硬链接</li><li>四次挥手第四次可能产生的问题</li><li>GET和POST区别</li><li>url在浏览器中的过程</li><li>jvm优化有了解么</li><li>docker是什么</li><li>docker image是什么</li><li>dfs，bfs区别优劣，使用场景</li><li>斐波那契</li></ol><p>二面</p><ol><li>https和http</li><li>加密算法分类</li><li>进程之间的通信</li><li>mysql背后的引擎</li><li>遍历的优化 (做了挺久)</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;面试记录&quot;&gt;&lt;a href=&quot;#面试记录&quot; class=&quot;headerlink&quot; title=&quot;面试记录&quot;&gt;&lt;/a&gt;面试记录&lt;/h1&gt;&lt;p&gt;一面&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;java jvm 垃圾回收&lt;/li&gt;
+&lt;li&gt;arraylist、linked list区别
+      
+    
+    </summary>
+    
+    
+    
+      <category term="面试" scheme="https://crunchybiscuits.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker常用指令</title>
     <link href="https://crunchybiscuits.github.io/2021/03/02/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/"/>
     <id>https://crunchybiscuits.github.io/2021/03/02/Docker%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4/</id>
@@ -339,9 +339,9 @@
     <link href="https://crunchybiscuits.github.io/2021/02/20/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E6%B5%81%E7%A8%8B/"/>
     <id>https://crunchybiscuits.github.io/2021/02/20/%E6%B8%B2%E6%9F%93%E7%AE%A1%E7%BA%BF%E6%B5%81%E7%A8%8B/</id>
     <published>2021-02-20T13:53:09.000Z</published>
-    <updated>2021-03-01T16:35:08.569Z</updated>
+    <updated>2021-03-29T12:52:58.938Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h1><p>大的流程</p><ol><li>数据资源</li><li>渲染管线</li><li>2d图像</li></ol><p>Unity内置的渲染管线分类</p><ol><li>CPU应用程序段渲染逻辑</li><li>GPU渲染管线</li></ol><h2 id="Unity渲染的流程："><a href="#Unity渲染的流程：" class="headerlink" title="Unity渲染的流程："></a>Unity渲染的流程：</h2><ol><li><p><strong>Camera组件调用Renderer()</strong></p></li><li><p><strong>剔除操作</strong></p><ol><li>视椎体剔除：根据field of view，近裁面和远裁面构成的锥体。剔除指会跟视椎体做一个碰撞检测，有相交的部分就表明应该被绘制，如果没有的话就应该剔掉。<strong>这里可以通过包围盒进行加速和优化</strong>。</li><li>遮挡剔除：</li><li>层级剔除：根据特定层级的物体进行剔除，Culling mask操作</li></ol></li><li><p><strong>渲染顺序</strong>：</p><ol><li>按距离</li><li>按渲染队列：Render Queue越小越先被渲染，不透明队列&lt;2500，半透明队列&gt;2500<ol><li>不透明物体默认是2000</li><li>半透明物体默认是3000</li><li>相等情况：不透明队列从前向后排序（优化方便剔除），半透明队列从后向前排序（渲染效果正确性）</li></ol></li></ol></li><li><p><strong>打包数据</strong>：</p><ol><li>模型信息：顶点坐标、法线(会合并相同的)、UV(会合并相同的，是一个二维数据，只有前两个分量有用)、顶点色、索引列表</li><li>变换矩阵：MVP</li><li>灯光、材质参数：Shader、材质参数、灯光信息</li></ol></li><li><p><strong>调用Shader</strong>: 告诉渲染管线现在要渲染哪些模型数据，要用哪个shader</p><ol><li>SetPassCall()：设置好渲染状态，使用哪种shader，哪种混合模式，设置好背面剔除</li><li>DrawCall()：使用哪些模型数据进行渲染</li></ol></li><li><p><strong>GPU渲染管线</strong>：25min</p><ol><li>顶点处理：从模型空间到裁剪空间，见顶点shader</li><li>图元装配和光栅化：<ol><li>裁剪操作：对三角面的操作而不是物体的剔除(通过判断顶点坐标进行操作)</li><li>NDC标准化设备坐标：透视除法(同时除以w)</li><li>背面剔除：引用模型的索引列表，如果索引排列顺序呈顺时针就留下，逆时针就是背面</li><li>屏幕坐标：通过视口转换(只针对x,y坐标)，z坐标用来判断前后关系</li><li>图元装配：连线，形成三角形(Bresenham画线)</li><li>光栅化：通过插值算法生成片元，z坐标变成深度值</li></ol></li><li>片元处理：见片元shader</li><li>输出合并：片源数据-&gt;alpha测试-&gt;模板测试-&gt;深度测试-&gt;混合-&gt;帧缓冲区<ol><li>最重要任务处理遮挡关系、处理半透明混合</li><li>帧缓冲区</li><li>深度测试<ol><li>zwrite 深度写入 即使通过深度测试也不会刷新缓冲区，并不影响颜色缓冲区的写入</li><li>ztest 深度测试 1h27min<ol><li>Early-z发生在片元shader之前或者顶点shader之后</li></ol></li></ol></li><li>混合：从后到前，关闭ZWrite</li></ol></li></ol></li><li><p><strong>帧缓冲区</strong>：一个跟屏幕大小一样的临时画布，等场景里的物体渲染完成后，屏幕就能从这个缓冲区里拿到图像</p></li><li><p><strong>后处理逻辑</strong>：这个阶段可再次调用逻辑</p></li><li><p><strong>再次GPU渲染管线</strong></p></li></ol><p><strong>多个摄像机</strong><br>每一个摄像机都会调用上述的流程<br>Unity摄像机：</p><ol><li>摄像机在清屏之前会调用clean flag，可以选择不清屏</li><li>depth可以选择先后顺序，越小越先渲染</li></ol><p><strong>Shader</strong></p><ol><li>顶点shader：主要处理投影成像操作，并不会完成2D成像，主要完成对3D场景的变形<ol><li>放置物体：模型空间-&gt;世界空间</li><li>摆好相机：世界空间-&gt;相机空间</li><li>摁下快门：相机空间-&gt;裁剪空间</li></ol></li><li>片元shader：最重要任务，上色<ol><li>纹理技术 56min<ol><li>纹理采样：根据采样公式给片元上色</li><li>纹理过滤机制 – 对应到Unity就是filter mode：<ol><li>四舍五入（不好用）</li><li>采样周围的四个插值进行计算（双线性插值）</li></ol></li><li>Mipmap：纹理链 – Unity可以生成Mipmap</li><li>纹理寻址模式：超出纹素范围的地址该怎么操作(uv坐标超过1怎么操作)</li><li>纹理压缩格式：RGBA，ASTC，ETC2，PVRTC</li></ol></li><li>光照计算<ol><li>光照组成</li><li>光照模型<ol><li>Phong光照模型 – 基于经验的光照模型 max(N<em>L,0.0)+pow(max(R</em>V,0.0),smoothness)+ambient = Phong<ol><li>漫反射  – 点乘得到cos值</li><li>高光反射 – 光滑度决定衰减范围，光滑度越小，衰减越大</li><li>环境光 – Lightmap、Reflection Probe、Light Probe</li></ol></li><li>基本思路：直接光漫反射+直接光镜面反射+间接光漫反射+间接光镜面反射</li></ol></li></ol></li></ol></li></ol>]]></content>
+    <content type="html"><![CDATA[<h1 id="渲染管线"><a href="#渲染管线" class="headerlink" title="渲染管线"></a>渲染管线</h1><p>大的流程</p><ol><li>数据资源</li><li>渲染管线</li><li>2d图像</li></ol><p>Unity内置的渲染管线分类</p><ol><li>CPU应用程序段渲染逻辑</li><li>GPU渲染管线</li></ol><h2 id="Unity渲染的流程："><a href="#Unity渲染的流程：" class="headerlink" title="Unity渲染的流程："></a>Unity渲染的流程：</h2><ol><li><p><strong>Camera组件调用Renderer()</strong></p></li><li><p><strong>剔除操作</strong></p><ol><li>视椎体剔除：根据field of view，近裁面和远裁面构成的锥体。剔除指会跟视椎体做一个碰撞检测，有相交的部分就表明应该被绘制，如果没有的话就应该剔掉。<strong>这里可以通过包围盒进行加速和优化</strong>。</li><li>遮挡剔除：根据在相机中的先后关系进行</li><li>层级剔除：根据特定层级的物体进行剔除，Culling mask操作</li></ol></li><li><p><strong>渲染顺序</strong>：</p><ol><li>按距离</li><li>按渲染队列：Render Queue越小越先被渲染，不透明队列&lt;2500，半透明队列&gt;2500<ol><li>不透明物体默认是2000</li><li>半透明物体默认是3000</li><li>相等情况：不透明队列从前向后排序（优化方便剔除），半透明队列从后向前排序（渲染效果正确性）</li></ol></li></ol></li><li><p><strong>打包数据</strong>：</p><ol><li>模型信息：顶点坐标、法线(会合并相同的)、UV(会合并相同的，是一个二维数据，只有前两个分量有用)、顶点色、索引列表</li><li>变换矩阵：MVP</li><li>灯光、材质参数：Shader、材质参数、灯光信息</li></ol></li><li><p><strong>调用Shader</strong>: 告诉渲染管线现在要渲染哪些模型数据，要用哪个shader</p><ol><li>SetPassCall()：设置好渲染状态，使用哪种shader，哪种混合模式，设置好背面剔除</li><li>DrawCall()：使用哪些模型数据进行渲染</li></ol></li><li><p><strong>GPU渲染管线</strong>：25min</p><ol><li>顶点处理：从模型空间到裁剪空间，见顶点shader</li><li>图元装配和光栅化：<ol><li>裁剪操作：对三角面的操作而不是物体的剔除(通过判断顶点坐标进行操作)</li><li>NDC标准化设备坐标：透视除法(同时除以w)</li><li>背面剔除：引用模型的索引列表，如果索引排列顺序呈顺时针就留下，逆时针就是背面</li><li>屏幕坐标：通过视口转换(只针对x,y坐标)，z坐标用来判断前后关系</li><li>图元装配：连线，形成三角形(Bresenham画线)</li><li>光栅化：通过插值算法生成片元，z坐标变成深度值</li></ol></li><li>片元处理：见片元shader</li><li>输出合并：片源数据-&gt;alpha测试-&gt;模板测试-&gt;深度测试-&gt;混合-&gt;帧缓冲区<ol><li>最重要任务处理遮挡关系、处理半透明混合</li><li>帧缓冲区</li><li>深度测试<ol><li>zwrite 深度写入 即使通过深度测试也不会刷新缓冲区，并不影响颜色缓冲区的写入</li><li>ztest 深度测试 1h27min<ol><li>Early-z发生在片元shader之前或者顶点shader之后</li></ol></li></ol></li><li>混合：从后到前，关闭ZWrite</li></ol></li></ol></li><li><p><strong>帧缓冲区</strong>：一个跟屏幕大小一样的临时画布，等场景里的物体渲染完成后，屏幕就能从这个缓冲区里拿到图像</p></li><li><p><strong>后处理逻辑</strong>：这个阶段可再次调用逻辑</p></li><li><p><strong>再次GPU渲染管线</strong></p></li></ol><p><strong>多个摄像机</strong><br>每一个摄像机都会调用上述的流程<br>Unity摄像机：</p><ol><li>摄像机在清屏之前会调用clean flag，可以选择不清屏</li><li>depth可以选择先后顺序，越小越先渲染</li></ol><p><strong>Shader</strong></p><ol><li>顶点shader：主要处理投影成像操作，并不会完成2D成像，主要完成对3D场景的变形<ol><li>放置物体：模型空间-&gt;世界空间</li><li>摆好相机：世界空间-&gt;相机空间</li><li>摁下快门：相机空间-&gt;裁剪空间</li></ol></li><li>片元shader：最重要任务，上色<ol><li>纹理技术 56min<ol><li>纹理采样：根据采样公式给片元上色</li><li>纹理过滤机制 – 对应到Unity就是filter mode：<ol><li>四舍五入（不好用）</li><li>采样周围的四个插值进行计算（双线性插值）</li></ol></li><li>Mipmap：纹理链 – Unity可以生成Mipmap</li><li>纹理寻址模式：超出纹素范围的地址该怎么操作(uv坐标超过1怎么操作)</li><li>纹理压缩格式：RGBA，ASTC，ETC2，PVRTC</li></ol></li><li>光照计算<ol><li>光照组成</li><li>光照模型<ol><li>Phong光照模型 – 基于经验的光照模型 max(N<em>L,0.0)+pow(max(R</em>V,0.0),smoothness)+ambient = Phong<ol><li>漫反射  – 点乘得到cos值</li><li>高光反射 – 光滑度决定衰减范围，光滑度越小，衰减越大</li><li>环境光 – Lightmap、Reflection Probe、Light Probe</li></ol></li><li>基本思路：直接光漫反射+直接光镜面反射+间接光漫反射+间接光镜面反射</li></ol></li></ol></li></ol></li></ol>]]></content>
     
     <summary type="html">
     
