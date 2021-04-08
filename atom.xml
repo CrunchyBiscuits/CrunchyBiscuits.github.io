@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-04-06T15:15:48.560Z</updated>
+  <updated>2021-04-08T14:28:41.694Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>光照模型和法线贴图(悲惨调试经历)</title>
+    <link href="https://crunchybiscuits.github.io/2021/04/08/%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%B3%95%E7%BA%BF%E8%B4%B4%E5%9B%BE-%E6%82%B2%E6%83%A8%E8%B0%83%E8%AF%95%E7%BB%8F%E5%8E%86/"/>
+    <id>https://crunchybiscuits.github.io/2021/04/08/%E5%85%89%E7%85%A7%E6%A8%A1%E5%9E%8B%E5%92%8C%E6%B3%95%E7%BA%BF%E8%B4%B4%E5%9B%BE-%E6%82%B2%E6%83%A8%E8%B0%83%E8%AF%95%E7%BB%8F%E5%8E%86/</id>
+    <published>2021-04-08T14:04:25.000Z</published>
+    <updated>2021-04-08T14:28:41.694Z</updated>
+    
+    <content type="html"><![CDATA[<p>实习的悲惨事故，主要在两个细小得错误上花费了特别多的时间，两个都是出在宏定义的地方，先把这个东西高高挂起</p><p><strong>#pragma multi_compile_fwdadd</strong></p><p>写成了multi_comple_fwdadd，导致在写多光源部分找了很久没找到问题，一直以为是代码逻辑出错</p><h2 id="光照"><a href="#光照" class="headerlink" title="光照"></a>光照</h2><p>光照计算的思考方式</p><ol><li>光源</li><li>模型表面材质结构</li><li>观察方向</li></ol><h3 id="光源"><a href="#光源" class="headerlink" title="光源"></a>光源</h3><ol><li>光源类型<ol><li>聚光灯和点光有衰减</li><li>光源方向</li><li>光源颜色</li></ol></li><li>灯光数据传递方式—RenderPath<ol><li>Forward 前向渲染<ol><li>Unity内置渲染管线Built-in</li><li>Unity URP渲染管线<ol><li>光照方面，能够在单个pass处理多个灯光</li></ol></li></ol></li><li>Deferred 延迟渲染：以灯光为单位进行渲染，因为使用了MRT<ol><li>UE4默认路径</li><li>Unity UDRP渲染管线</li></ol></li></ol></li></ol><h3 id="RenderPath"><a href="#RenderPath" class="headerlink" title="RenderPath"></a>RenderPath</h3><p>决定了shader是以怎样的一个规则去计算灯光的</p><ul><li><p>前向渲染：unity内置的渲染管线， unity URP渲染管线</p></li><li><p>延迟渲染：UE4默认渲染路径， Unity HDRP渲染管线</p></li></ul><h4 id="前向渲染：物体被重复叠加绘制多次（实时灯光的数量）"><a href="#前向渲染：物体被重复叠加绘制多次（实时灯光的数量）" class="headerlink" title="前向渲染：物体被重复叠加绘制多次（实时灯光的数量）"></a>前向渲染：物体被重复叠加绘制多次（实时灯光的数量）</h4><p>forwardadd函数</p><p>前向渲染的消耗问题，引擎edit -&gt; project setting -&gt; quality -&gt; pixel light count，不调整会出现粗糙灯光</p><p>超过了light count的灯光，就会被当作顶点光源，只能在顶点shader里进行计算</p><p>需要shader里面写两个pass：</p><ol><li>forward base：主方向光，也处理超出数量的顶点灯光</li><li>forward pass：结果通过 blend one one的方式进行叠加</li></ol><h4 id="延迟渲染："><a href="#延迟渲染：" class="headerlink" title="延迟渲染："></a>延迟渲染：</h4><p>主要两个阶段</p><ol><li>RenderDeferred gbuffer<br>这里使用了MRT — Multi Render Target<br>RT0 diffuse<br>RT1 金属度<br>RT2 法线数据<br>Depth 深度</li><li>RenderDeferred lighting<br>以灯光为单位对场景进行渲染，因为把需要的信息已经提前渲染好了 </li></ol><p><strong>延迟渲染对多光源友好，有一定使用瓶颈，占用带宽高，普通机型可能受不了，前向渲染就很轻量化</strong></p><p><strong>怎么判断是否是主方向光 — 光的亮度最大那个</strong></p><h3 id="模型表面材质结构"><a href="#模型表面材质结构" class="headerlink" title="模型表面材质结构"></a>模型表面材质结构</h3><ol><li>顶点法线</li><li>法线贴图</li><li>光滑度</li><li>PBR理论框架</li></ol><h3 id="多光源的实现"><a href="#多光源的实现" class="headerlink" title="多光源的实现"></a>多光源的实现</h3><p>通过forwardadd pass实现</p><p>第二个pass修改地方</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Tags&#123;<span class="string">&quot;LightMode&quot;</span>=<span class="string">&quot;ForwardAdd&quot;</span>&#125;</span><br><span class="line">Blend One One</span><br><span class="line">#pragma multi_compile_fwadd</span><br><span class="line">#include <span class="string">&quot;AutoLight.cginc&quot;</span></span><br></pre></td></tr></table></figure><p><strong>衰减的计算</strong></p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(DIRECTIONAL)</span></span><br><span class="line"><span class="comment">// 平行光</span></span><br><span class="line">half3 light_dir = _WorldSpaceLightPos0.xyz;</span><br><span class="line">half attuenation = <span class="number">1.0</span></span><br><span class="line">#elif defined(POINT)</span><br><span class="line"><span class="comment">// 点光</span></span><br><span class="line">half3 light_dir = normalize(_WorldSpaceLightPos0.xyz - i.pos_world);</span><br><span class="line"><span class="comment">// 衰减范围计算</span></span><br><span class="line">half distance = length(_WorldSpaceLightPos0.xyz - i.pos_world);</span><br><span class="line">half range = <span class="number">1.0</span> / unity_WorldToLight[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">half attuenation = saturate((range - distance)/range);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure><h2 id="法线贴图"><a href="#法线贴图" class="headerlink" title="法线贴图"></a>法线贴图</h2><p>思路：</p><ol><li><p>切线是在模型导入的时候确定的，根据UV中U方向走向定义的</p></li><li><p>再通过法线和切线cross得到副切线，就构成了切线空间</p></li></ol><p><strong>在shader中关键点在tangent.w分量的处理，主要是用来处理不同平台法线反转的问题</strong></p><p>压缩格式问题：PC上DXT/BC对法线贴图压缩，这样通道信息就会变更，只剩红色通道和alpha通道(所以红色不一定是错的)</p><p>在shader还需要解码操作，因为法线贴图范围是[0,1]，但是法线数据需要[-1,1]</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">vert(appdata v)&#123;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    o.normal_dir = normalize(mul(float4(v.normal, <span class="number">0.0</span>),unity_WorldToObject).xyz);</span><br><span class="line">    o.pos_world = mul(unity_ObjectToWorld, v.vertex).xyz;</span><br><span class="line">    o.tangent_dir = normalize(mul(unity_ObjectToWorld, float4(v.tangent.xyz,<span class="number">0.0</span>)).xyz);</span><br><span class="line">    o.binormal_dir = normalize(cross(o.normal_dir, o.tangent_dir)) * v.tangent.w;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">frag(v2f i):SV_TARGET&#123;</span><br><span class="line">    ...</span><br><span class="line">    ...</span><br><span class="line">    half4 normalmap = tex2D(_NormalMap, i.uv);</span><br><span class="line">    half3 normal_data = UnpackNormal(normalmap);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// normalmap</span></span><br><span class="line">    half3 normal_dir =  normalize(i.normal_dir);</span><br><span class="line">    half3 tangent_dir = normalize(i.tangent_dir);</span><br><span class="line">    half3 binormal_dir = normalize(i.binormal_dir);</span><br><span class="line"></span><br><span class="line">    normal_dir = normalize(tangent_dir * normal_data.x + binormal_dir * normal_data.y + normal_dir * normal_data.z);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;实习的悲惨事故，主要在两个细小得错误上花费了特别多的时间，两个都是出在宏定义的地方，先把这个东西高高挂起&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;#pragma multi_compile_fwdadd&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;写成了multi_comple_fwdadd，导
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
+    
+  </entry>
   
   <entry>
     <title>GAMES202-Lecture3笔记</title>
@@ -475,30 +501,6 @@
       
       
         &lt;h1 id=&quot;Transformation&quot;&gt;&lt;a href=&quot;#Transformation&quot; class=&quot;headerlink&quot; title=&quot;Transformation&quot;&gt;&lt;/a&gt;Transformation&lt;/h1&gt;&lt;h2 id=&quot;Why&quot;&gt;&lt;a href=&quot;#Wh
-      
-    
-    </summary>
-    
-    
-    
-      <category term="Renderer" scheme="https://crunchybiscuits.github.io/tags/Renderer/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>渲染器的诞生(三)--深度缓冲</title>
-    <link href="https://crunchybiscuits.github.io/2021/02/13/%E6%B7%B1%E5%BA%A6%E7%BC%93%E5%86%B2/"/>
-    <id>https://crunchybiscuits.github.io/2021/02/13/%E6%B7%B1%E5%BA%A6%E7%BC%93%E5%86%B2/</id>
-    <published>2021-02-13T04:21:06.000Z</published>
-    <updated>2021-03-01T16:34:10.089Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="深度缓冲"><a href="#深度缓冲" class="headerlink" title="深度缓冲"></a>深度缓冲</h1><p>由于画家算法的缺陷，我们常常在3D渲染中碰到错位的情况，因此引入深度缓冲来解决这样的问题。通过深度缓冲来存放场景中点距离照相机的远近，以此来判断当前像素点应该渲染出的颜色。这样渲染器就可以顺序的去处理场景。</p><h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><ul><li>遍历每一个三角形<ul><li>遍历三角形中的样本<ul><li>如果当前深度值小于之前的值</li><li>更新样本颜色</li><li>更新深度缓存</li><li>否则什么都不做</li></ul></li></ul></li></ul><h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 遍历包围盒</span></span><br><span class="line"><span class="keyword">for</span> (P.x=bboxmin.x; P.x&lt;=bboxmax.x; P.x++) &#123;</span><br><span class="line">    <span class="keyword">for</span> (P.y=bboxmin.y; P.y&lt;=bboxmax.y; P.y++) &#123;</span><br><span class="line">        <span class="comment">// 通过重心坐标判断位置</span></span><br><span class="line">        Vec3f bc_screen  = barycentric(pts[<span class="number">0</span>], pts[<span class="number">1</span>], pts[<span class="number">2</span>], P);</span><br><span class="line">        <span class="comment">// 在三角形外就跳过</span></span><br><span class="line">        <span class="keyword">if</span> (bc_screen.x&lt;<span class="number">0</span> || bc_screen.y&lt;<span class="number">0</span> || bc_screen.z&lt;<span class="number">0</span>) <span class="keyword">continue</span>;</span><br><span class="line">        P.z = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 获取z值</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;<span class="number">3</span>; i++) P.z += pts[i][<span class="number">2</span>]*bc_screen[i];</span><br><span class="line">        <span class="comment">// 深度缓存更新</span></span><br><span class="line">        <span class="keyword">if</span> (zbuffer[<span class="keyword">int</span>(P.x+P.y*<span class="built_in">width</span>)]&lt;P.z) &#123;</span><br><span class="line">            zbuffer[<span class="keyword">int</span>(P.x+P.y*<span class="built_in">width</span>)] = P.z;</span><br><span class="line">            <span class="built_in">image</span>.<span class="built_in">set</span>(P.x, P.y, color);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;深度缓冲&quot;&gt;&lt;a href=&quot;#深度缓冲&quot; class=&quot;headerlink&quot; title=&quot;深度缓冲&quot;&gt;&lt;/a&gt;深度缓冲&lt;/h1&gt;&lt;p&gt;由于画家算法的缺陷，我们常常在3D渲染中碰到错位的情况，因此引入深度缓冲来解决这样的问题。通过深度缓冲来存放场景中点距离照相
       
     
     </summary>
