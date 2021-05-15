@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-05-14T14:16:30.438Z</updated>
+  <updated>2021-05-15T13:13:52.977Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://crunchybiscuits.github.io/2021/05/14/%E7%BA%BF%E6%80%A7%E7%A9%BA%E9%97%B4%E5%92%8C%E4%BC%BD%E9%A9%AC%E7%A9%BA%E9%97%B4/"/>
     <id>https://crunchybiscuits.github.io/2021/05/14/%E7%BA%BF%E6%80%A7%E7%A9%BA%E9%97%B4%E5%92%8C%E4%BC%BD%E9%A9%AC%E7%A9%BA%E9%97%B4/</id>
     <published>2021-05-14T14:15:26.000Z</published>
-    <updated>2021-05-14T14:16:30.438Z</updated>
+    <updated>2021-05-15T13:13:52.977Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Gamma和Linear"><a href="#Gamma和Linear" class="headerlink" title="Gamma和Linear"></a>Gamma和Linear</h1><h2 id="线性空间"><a href="#线性空间" class="headerlink" title="线性空间"></a>线性空间</h2><p>在线性空间下，我们感知到的强度和对应的数值强度是按比例对应的，也就是说如果有两个数值强度0.25和0.25那么他们相加的数值强度就是0.5。没有这样特性的空间就是非线性空间。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/gamma_01.png" alt=""></p><h2 id="伽马空间"><a href="#伽马空间" class="headerlink" title="伽马空间"></a>伽马空间</h2><p>之所以引入gamma空间一是因为显示器对颜色强度的感知是非线性的，另一个原因是人眼在较暗的环境下比起亮的环境能够更好的辨别细节。因此在图像压缩中我们希望能够在暗部获得更高的精确度，所以对图像每个像素引入了一个幂函数来进行处理。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/gamma.png" alt=""></p><p>上图(图片来自kinematicsoup)可以看到，当我们在0.45的gamma下，暗部区域有了更高的值，这样就为暗部获取了更高的精确度，但是亮部区域信息就被压缩了。以这样形式存储的图片就称为放在gamma空间中，在显示器上显示的时候会对图片进行一个gamma为2.2的幂的操作，在这里就抵消了0.45gamma的影响，因此能够显示正常。</p><h2 id="常见流程"><a href="#常见流程" class="headerlink" title="常见流程"></a>常见流程</h2><p>在游戏中为了达到更真实的渲染结果 (常见于PBR)，因此先去除gamma矫正再对图像进行操作</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/gamma_00.png" alt="这里写图片描述"></p><h2 id="Unity中的设置"><a href="#Unity中的设置" class="headerlink" title="Unity中的设置"></a>Unity中的设置</h2><p>在unity中通过<strong>Edit-&gt;Project Settings-&gt;Player-&gt;Other Settings</strong>中可以直接设置在线性空间中进行</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/gamma2.png" alt=""></p><p>Unity默认对移动平台不支持线性空间。但可以在着色器里来做类似实现：对传进来的贴图做幂为2.2的pow()函数处理，然后在颜色返回值前做幂为0.45的pow()函数处理。这种实现有计算开销，<strong>不能滥用</strong></p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.kinematicsoup.com/news/2016/6/15/gamma-and-linear-space-what-they-are-how-they-differ">kinematicsoup</a></p>]]></content>
     
