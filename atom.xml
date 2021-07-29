@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-07-26T08:21:57.643Z</updated>
+  <updated>2021-07-26T10:55:25.329Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深度测试</title>
+    <link href="https://crunchybiscuits.github.io/2021/07/26/%E6%B7%B1%E5%BA%A6%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%E9%80%8F%E6%98%8E%E6%B5%8B%E8%AF%95/"/>
+    <id>https://crunchybiscuits.github.io/2021/07/26/%E6%B7%B1%E5%BA%A6%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%E9%80%8F%E6%98%8E%E6%B5%8B%E8%AF%95/</id>
+    <published>2021-07-26T10:38:59.000Z</published>
+    <updated>2021-07-26T10:55:25.329Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="深度测试"><a href="#深度测试" class="headerlink" title="深度测试"></a>深度测试</h1>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;深度测试&quot;&gt;&lt;a href=&quot;#深度测试&quot; class=&quot;headerlink&quot; title=&quot;深度测试&quot;&gt;&lt;/a&gt;深度测试&lt;/h1&gt;
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
+    
+  </entry>
   
   <entry>
     <title>FBX SDK简单使用(一)</title>
@@ -78,33 +102,6 @@
       
       
         &lt;h1 id=&quot;Gamma和Linear&quot;&gt;&lt;a href=&quot;#Gamma和Linear&quot; class=&quot;headerlink&quot; title=&quot;Gamma和Linear&quot;&gt;&lt;/a&gt;Gamma和Linear&lt;/h1&gt;&lt;h2 id=&quot;线性空间&quot;&gt;&lt;a href=&quot;#线性空间&quot; cla
-      
-    
-    </summary>
-    
-    
-    
-      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>火焰效果</title>
-    <link href="https://crunchybiscuits.github.io/2021/05/11/%E7%81%AB%E7%84%B0%E6%95%88%E6%9E%9C/"/>
-    <id>https://crunchybiscuits.github.io/2021/05/11/%E7%81%AB%E7%84%B0%E6%95%88%E6%9E%9C/</id>
-    <published>2021-05-11T03:27:11.000Z</published>
-    <updated>2021-05-11T04:55:38.092Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="火焰"><a href="#火焰" class="headerlink" title="火焰"></a>火焰</h1><p>思路：</p><ol><li>通过半透明测试(clip)对噪声图进行裁剪</li><li>半透明混合 – 软边缘需要<pre><code>  1. 通过noise和gradient实现基本火焰效果2. 通过gradient进行one minus和noise实现内焰3. 通过shape贴图结合反向的gradient和noise进行形状的更改</code></pre></li></ol><p>clip版本</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">half4 col = tex2D(_MainTex, i.uv  + _MainTex_ST.zw * _Time.y);</span><br><span class="line">half4 gra_col = tex2D(_Gradient, i.uv);</span><br><span class="line"><span class="comment">// Height调整裁剪范围</span></span><br><span class="line">clip(gra_col.r + _Height - col.r);</span><br></pre></td></tr></table></figure><h2 id="软边缘："><a href="#软边缘：" class="headerlink" title="软边缘："></a>软边缘：</h2><p>打开半透明混合</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Tags &#123;&quot;Queue&quot; &#x3D; &quot;Transparent&quot; &quot;RenderType&quot; &#x3D; &quot;Transparent&quot; &quot;IgnoreProjector&quot; &#x3D; &quot;True&quot;&#125;</span><br><span class="line">Blend SrcAlpha OneMinusSrcAlpha</span><br></pre></td></tr></table></figure><p>通过smoothstep修改alpha通道，使得火焰的边缘更加柔和</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_FireColor.a = smoothstep(col.r-_Softness,col.r,gra_col.r + _Height);</span><br></pre></td></tr></table></figure><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/fire_out02.gif" alt=""></p><h2 id="内焰-外焰"><a href="#内焰-外焰" class="headerlink" title="内焰/外焰"></a>内焰/外焰</h2><p>通过对gradient进行one minus后修改颜色的g通道获得</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">half gra_end_col = (<span class="number">1.0</span> - gra_col.r) * _GradientEnd;</span><br><span class="line">_FireColor.g = <span class="number">1.0</span> - gra_end_col * col.r;</span><br></pre></td></tr></table></figure><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/fire_out3.gif" alt=""></p><h2 id="形状和扰动"><a href="#形状和扰动" class="headerlink" title="形状和扰动"></a>形状和扰动</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加shape后也要对fire颜色的透明通道进行修改</span></span><br><span class="line">half4 shape = tex2D(_FireShape, half2(i.uv.x + col.r * gra_end_col,i.uv.y));</span><br></pre></td></tr></table></figure><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/fire_out04.gif" alt=""></p><h2 id="添加bloom"><a href="#添加bloom" class="headerlink" title="添加bloom"></a>添加bloom</h2><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/fire_out01.gif" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;火焰&quot;&gt;&lt;a href=&quot;#火焰&quot; class=&quot;headerlink&quot; title=&quot;火焰&quot;&gt;&lt;/a&gt;火焰&lt;/h1&gt;&lt;p&gt;思路：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;通过半透明测试(clip)对噪声图进行裁剪&lt;/li&gt;
-&lt;li&gt;半透明混合 – 软边缘需要&lt;pre&gt;&lt;cod
       
     
     </summary>
