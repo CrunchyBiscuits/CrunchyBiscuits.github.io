@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-07-26T10:55:25.329Z</updated>
+  <updated>2021-07-26T08:21:57.643Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,30 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>深度测试</title>
-    <link href="https://crunchybiscuits.github.io/2021/07/26/%E6%B7%B1%E5%BA%A6%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%E9%80%8F%E6%98%8E%E6%B5%8B%E8%AF%95/"/>
-    <id>https://crunchybiscuits.github.io/2021/07/26/%E6%B7%B1%E5%BA%A6%E3%80%81%E6%A8%A1%E6%9D%BF%E3%80%81%E9%80%8F%E6%98%8E%E6%B5%8B%E8%AF%95/</id>
-    <published>2021-07-26T10:38:59.000Z</published>
-    <updated>2021-07-26T10:55:25.329Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="深度测试"><a href="#深度测试" class="headerlink" title="深度测试"></a>深度测试</h1>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;深度测试&quot;&gt;&lt;a href=&quot;#深度测试&quot; class=&quot;headerlink&quot; title=&quot;深度测试&quot;&gt;&lt;/a&gt;深度测试&lt;/h1&gt;
-      
-    
-    </summary>
-    
-    
-    
-      <category term="Shader" scheme="https://crunchybiscuits.github.io/tags/Shader/"/>
-    
-  </entry>
   
   <entry>
     <title>FBX SDK简单使用(一)</title>
@@ -492,6 +468,30 @@
       
       
         &lt;h1 id=&quot;Docker常用指令&quot;&gt;&lt;a href=&quot;#Docker常用指令&quot; class=&quot;headerlink&quot; title=&quot;Docker常用指令&quot;&gt;&lt;/a&gt;Docker常用指令&lt;/h1&gt;&lt;h2 id=&quot;帮助命令&quot;&gt;&lt;a href=&quot;#帮助命令&quot; class=&quot;head
+      
+    
+    </summary>
+    
+    
+    
+      <category term="Docker" scheme="https://crunchybiscuits.github.io/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Docker梳理</title>
+    <link href="https://crunchybiscuits.github.io/2021/02/27/Docker%E6%A2%B3%E7%90%86/"/>
+    <id>https://crunchybiscuits.github.io/2021/02/27/Docker%E6%A2%B3%E7%90%86/</id>
+    <published>2021-02-26T16:31:56.000Z</published>
+    <updated>2021-03-01T16:31:43.506Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="联合文件系统"><a href="#联合文件系统" class="headerlink" title="联合文件系统"></a>联合文件系统</h2><p>它支持对文件系统的修改作为一次提交来一层一层的叠加，可以看到每一次修改，极大节省内存和空间</p><ul><li>bootfs，主要包含bootloader和kernal<ul><li>黑屏到开机的过程</li></ul></li><li>rootfs<ul><li>不同的发行版</li></ul></li></ul><h2 id="镜像分层"><a href="#镜像分层" class="headerlink" title="镜像分层"></a>镜像分层</h2><p>每操作一步都加新的一层<br>从远程pull下来的镜像层是无法改变的<br>run之后已经新加了一层<br>所有操作都是基于容器层的</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Docker&quot;&gt;&lt;a href=&quot;#Docker&quot; class=&quot;headerlink&quot; title=&quot;Docker&quot;&gt;&lt;/a&gt;Docker&lt;/h1&gt;&lt;h2 id=&quot;联合文件系统&quot;&gt;&lt;a href=&quot;#联合文件系统&quot; class=&quot;headerlink&quot; titl
       
     
     </summary>
