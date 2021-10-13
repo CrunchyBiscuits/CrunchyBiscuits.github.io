@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://crunchybiscuits.github.io/"/>
-  <updated>2021-07-26T08:21:57.643Z</updated>
+  <updated>2021-10-13T16:03:25.744Z</updated>
   <id>https://crunchybiscuits.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>PBR基础理论</title>
+    <link href="https://crunchybiscuits.github.io/2021/10/14/PBR%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/"/>
+    <id>https://crunchybiscuits.github.io/2021/10/14/PBR%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/</id>
+    <published>2021-10-13T16:02:25.000Z</published>
+    <updated>2021-10-13T16:03:25.744Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="PBR基础介绍-一"><a href="#PBR基础介绍-一" class="headerlink" title="PBR基础介绍(一)"></a>PBR基础介绍(一)</h1><p>主要了解PBR的各种部分的作用以及相关参数的影响，非物理意义推导</p><h2 id="基础理论"><a href="#基础理论" class="headerlink" title="基础理论"></a>基础理论</h2><p>抛开自发光，渲染方程通常长成这个样子</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_00.png" alt=""></p><p>简单的理解成以下几个部分:</p><ol><li>Lo(v)表示从一个点反射出的光照强度。</li><li>f(l, v)表示该点入射光线强度和反射之间的比例，一般有BRDF， BTDF， BSDF和BSSRDF等。</li><li>Li(l) * (n · l)表示入射光照强度Li乘以衰减。</li><li>整个大的积分表示的是该点对应的半球积分的累加 — 这里积分是通过蒙特卡洛近似去求解的</li></ol><p>而PBR中的渲染方程通常长这样，本质上其实是计算某一点在经过反射，折射后相关信息的比值。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_01.png" alt=""></p><p>和第上一条公式相比变化的地方可以理解为以下几个部分：</p><ol><li>反射<ol><li>漫反射项 + 漫反射比例 — Kd * C / PI</li><li>镜面反射项 + 镜面反射比例 — Ks * ( D * F * G / 4 * (Wo · n) * (Wi · n)<ol><li>法线分布函数D — Normal Distribution</li><li>几何函数 G — Gemetric，有时候也会是 V (visibility)</li><li>菲涅尔 F — Fresnel</li></ol></li></ol></li><li>光源颜色以及其衰减 — Li(p, Wi) * (Wi · n)</li></ol><p>与PBR相关的基础理论如下：</p><ol><li>微平面理论 (Microfacet Theory) </li><li>能量守恒 (Energy Conservation)</li><li>菲涅尔反射 (Fresnel Reflectance)</li><li>线性空间 (Linear Space)</li><li>色调映射 (Tone Mapping)</li><li>物质的光学特性 (Substance Optical Properties)</li></ol><p>色调映射和线性空间在之前文章已经有过记录，这里不再提及。</p><h3 id="微平面理论"><a href="#微平面理论" class="headerlink" title="微平面理论"></a>微平面理论</h3><p>此理论主要涉及法线分布函数项D和几何函数项G，这里有两种类型的平面，一个是宏观上大的平面，另一个是微观上在这个大平面上的若干微小镜面。因此法线和几何关系也涉及到宏观上和微观上的区分，微平面理论处理的就是如何在宏观平面上，将其下那些微小镜面的产生的特性给展现出来。在实际的工作流程中，通常用粗糙度贴图或者高光贴图来表示。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_02.png" alt=""></p><p>上图可以看到光滑和粗糙的一个对比，从法线分布函数项上分析，这里比较的主要就是有多少微平面的法线和宏观上平面的法线是一致的，一致的比例越多，在宏观上表现越光滑。</p><p>几何函数项上分析，并不是所有和宏观平面法线一致的微表面都会有贡献，类似AO，在微表面上，入射和出射的时候都有可能会被遮挡。实际上，被遮挡的光线在微平面上来回反弹也会有为出射光线做出贡献的时候，但是在微平面理论中假设被遮挡的光线就不再为最后的出射光线做贡献了。<img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_03.png" alt=""></p><p>这两项在功能上和法线贴图还有AO贴图类似，但是这两张贴图做不到那么细致的精度，通常在PBR流程中用专门的粗糙度或者高光贴图代替。</p><p>两者本质上都是一个比例，一种系数。</p><h3 id="能量守恒"><a href="#能量守恒" class="headerlink" title="能量守恒"></a>能量守恒</h3><p>如同现实世界中那样，在某个点上遇到反射和折射的时候，会有能量被吸收和损耗，因此出射的光线强度肯定是小于入射光线的，并且越粗糙的平面高光区域越大，那么强度应该相对较小，但是如下图所示传统的Blinn-phong经验模型并不能体现出这一点。<strong>因此需要进行能量的统一由此引入了BRDF中漫反射的Kd和高光的Ks项</strong>。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_04.png" alt=""></p><h3 id="菲涅尔反射"><a href="#菲涅尔反射" class="headerlink" title="菲涅尔反射"></a>菲涅尔反射</h3><p>菲涅尔反射是一种现象，与视线还有物体表面的夹角有关，这里涉及到的一个概念是掠射角(入射角的余角)，当掠射角越大，那么菲涅尔的现象越明显。常言道万物皆有菲涅尔，不同的物质有不同的反射率。在F中会涉及到F0这个参数，这个表示的是入射角为0°的时候的菲涅尔的值，金属一般在0.7 - 1.0， 非金属一般在0.02 - 0.04。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_05.png" alt=""></p><h3 id="物质光学特性"><a href="#物质光学特性" class="headerlink" title="物质光学特性"></a>物质光学特性</h3><p>这个是和上述菲涅尔反射相联系的，主要分为金属和非金属，金属一般在0.7 - 1.0， 非金属一般在0.02 - 0.04。通常都是用一个float3表示，但是非金属的三个值通常是一致的因此常呈现灰，而金属则会因为不同而表现出彩色的反射颜色。因为非金属的值非常小，因此在unity中，通常用float3(0.04, 0.04, 0.04)来表示非金属，用Albedo去表示金属的F0值。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_06.png" alt=""></p><p>但是物体在现实世界中，即使是金属也会有氧化等各种情况，而出现金属和非金属结合的一种状态，所以通过Metallic值来做插值。</p><p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_07.png" alt=""></p><p>参考：</p><ol><li><a href="https://blog.selfshadow.com/publications/s2015-shading-course/hoffman/s2015_pbs_physics_math_slides.pdf">https://blog.selfshadow.com/publications/s2015-shading-course/hoffman/s2015_pbs_physics_math_slides.pdf</a></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;PBR基础介绍-一&quot;&gt;&lt;a href=&quot;#PBR基础介绍-一&quot; class=&quot;headerlink&quot; title=&quot;PBR基础介绍(一)&quot;&gt;&lt;/a&gt;PBR基础介绍(一)&lt;/h1&gt;&lt;p&gt;主要了解PBR的各种部分的作用以及相关参数的影响，非物理意义推导&lt;/p&gt;
+&lt;h2
+      
+    
+    </summary>
+    
+    
+    
+      <category term="PBR" scheme="https://crunchybiscuits.github.io/tags/PBR/"/>
+    
+  </entry>
   
   <entry>
     <title>FBX SDK简单使用(一)</title>
@@ -468,30 +493,6 @@
       
       
         &lt;h1 id=&quot;Docker常用指令&quot;&gt;&lt;a href=&quot;#Docker常用指令&quot; class=&quot;headerlink&quot; title=&quot;Docker常用指令&quot;&gt;&lt;/a&gt;Docker常用指令&lt;/h1&gt;&lt;h2 id=&quot;帮助命令&quot;&gt;&lt;a href=&quot;#帮助命令&quot; class=&quot;head
-      
-    
-    </summary>
-    
-    
-    
-      <category term="Docker" scheme="https://crunchybiscuits.github.io/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker梳理</title>
-    <link href="https://crunchybiscuits.github.io/2021/02/27/Docker%E6%A2%B3%E7%90%86/"/>
-    <id>https://crunchybiscuits.github.io/2021/02/27/Docker%E6%A2%B3%E7%90%86/</id>
-    <published>2021-02-26T16:31:56.000Z</published>
-    <updated>2021-03-01T16:31:43.506Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="联合文件系统"><a href="#联合文件系统" class="headerlink" title="联合文件系统"></a>联合文件系统</h2><p>它支持对文件系统的修改作为一次提交来一层一层的叠加，可以看到每一次修改，极大节省内存和空间</p><ul><li>bootfs，主要包含bootloader和kernal<ul><li>黑屏到开机的过程</li></ul></li><li>rootfs<ul><li>不同的发行版</li></ul></li></ul><h2 id="镜像分层"><a href="#镜像分层" class="headerlink" title="镜像分层"></a>镜像分层</h2><p>每操作一步都加新的一层<br>从远程pull下来的镜像层是无法改变的<br>run之后已经新加了一层<br>所有操作都是基于容器层的</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;Docker&quot;&gt;&lt;a href=&quot;#Docker&quot; class=&quot;headerlink&quot; title=&quot;Docker&quot;&gt;&lt;/a&gt;Docker&lt;/h1&gt;&lt;h2 id=&quot;联合文件系统&quot;&gt;&lt;a href=&quot;#联合文件系统&quot; class=&quot;headerlink&quot; titl
       
     
     </summary>
