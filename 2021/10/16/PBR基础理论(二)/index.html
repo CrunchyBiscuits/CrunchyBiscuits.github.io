@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PBR基础理论(二) | ZY-Zhang</title><meta name="description" content="PBR基础介绍(二)本文将在unity中尝试复现上文提及的内容，主要参考了宋开心大佬的这篇  根据BRDF的渲染方程需要实现的主要部分：  直接光 直接光漫反射 直接光高光 法线分布函数 D 几何函数 G 菲涅尔函数 F     间接光 IBL SH    实现之前Unity的linear空间与Gamma空间1234567&#x2F;&#x2F; Shader中涉及到的参数如下_MainTex(&amp;"><meta name="keywords" content="PBR"><meta name="author" content="ZY-Zhang"><meta name="copyright" content="ZY-Zhang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="shortcut icon" href="/img/top.jpg"><link rel="canonical" href="https://crunchybiscuits.github.io/2021/10/16/PBR%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA(%E4%BA%8C)/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta property="og:type" content="article"><meta property="og:title" content="PBR基础理论(二)"><meta property="og:url" content="https://crunchybiscuits.github.io/2021/10/16/PBR%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA(%E4%BA%8C)/"><meta property="og:site_name" content="ZY-Zhang"><meta property="og:description" content="PBR基础介绍(二)本文将在unity中尝试复现上文提及的内容，主要参考了宋开心大佬的这篇  根据BRDF的渲染方程需要实现的主要部分：  直接光 直接光漫反射 直接光高光 法线分布函数 D 几何函数 G 菲涅尔函数 F     间接光 IBL SH    实现之前Unity的linear空间与Gamma空间1234567&#x2F;&#x2F; Shader中涉及到的参数如下_MainTex(&amp;"><meta property="og:image" content="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_18.png"><meta property="article:published_time" content="2021-10-16T06:28:38.000Z"><meta property="article:modified_time" content="2021-10-16T06:29:41.398Z"><meta name="twitter:card" content="summary"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.0.2',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  bookmark: {
+    message_prev: 'Press',
+    message_next: 'to bookmark this page'
+  },
+  runtime: 'days',
+  date_suffix: {"one_hour":"Just","hours":"hours ago","day":"days ago"},
+  copyright: {"limitCount":50,"languages":{"author":"Author: ZY-Zhang","link":"Link: ","source":"Source: ZY-Zhang","info":"Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source."}},
+  ClickShowText: undefined,
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+    },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2021-10-16 14:29:41'
+}</script><noscript><style type="text/css">
+#nav {
+  opacity: 1
+}
+.justified-gallery img {
+  opacity: 1
+}
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.0.2"><link rel="alternate" href="/atom.xml" title="ZY-Zhang" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="/img/ava.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">Articles</div><div class="length_num">44</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">Tags</div><div class="length_num">12</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PBR%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D-%E4%BA%8C"><span class="toc-number">1.</span> <span class="toc-text">PBR基础介绍(二)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E4%B9%8B%E5%89%8D"><span class="toc-number">1.1.</span> <span class="toc-text">实现之前</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unity%E7%9A%84linear%E7%A9%BA%E9%97%B4%E4%B8%8EGamma%E7%A9%BA%E9%97%B4"><span class="toc-number">1.1.1.</span> <span class="toc-text">Unity的linear空间与Gamma空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Roughness%E5%92%8CperceptualRoughness%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.1.2.</span> <span class="toc-text">Roughness和perceptualRoughness的关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%85%89"><span class="toc-number">1.2.</span> <span class="toc-text">直接光</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%85%89%E6%BC%AB%E5%8F%8D%E5%B0%84"><span class="toc-number">1.2.1.</span> <span class="toc-text">直接光漫反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%85%89%E9%95%9C%E9%9D%A2%E5%8F%8D%E5%B0%84"><span class="toc-number">1.2.2.</span> <span class="toc-text">直接光镜面反射</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%95%E7%BA%BF%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0-D"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">法线分布函数 D</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%87%A0%E4%BD%95%E5%87%BD%E6%95%B0-G"><span class="toc-number">1.2.2.2.</span> <span class="toc-text">几何函数 G</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8F%B2%E6%B6%85%E5%B0%94-F"><span class="toc-number">1.2.2.3.</span> <span class="toc-text">菲涅尔 F</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%85%89"><span class="toc-number">1.3.</span> <span class="toc-text">环境光</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E5%85%89%E6%BC%AB%E5%8F%8D%E5%B0%84"><span class="toc-number">1.3.1.</span> <span class="toc-text">间接光漫反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E5%85%89%E9%95%9C%E9%9D%A2%E5%8F%8D%E5%B0%84"><span class="toc-number">1.3.2.</span> <span class="toc-text">间接光镜面反射</span></a></li></ol></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_18.png)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">ZY-Zhang</a></span><span id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">PBR基础理论(二)</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2021-10-16T06:28:38.000Z" title="Created 2021-10-16 14:28:38">2021-10-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2021-10-16T06:29:41.398Z" title="Updated 2021-10-16 14:29:41">2021-10-16</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h1 id="PBR基础介绍-二"><a href="#PBR基础介绍-二" class="headerlink" title="PBR基础介绍(二)"></a>PBR基础介绍(二)</h1><p>本文将在unity中尝试复现上文提及的内容，主要参考了<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/68025039">宋开心大佬的这篇</a></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_01.png" alt=""></p>
+<p>根据BRDF的渲染方程需要实现的主要部分：</p>
+<ol>
+<li>直接光<ol>
+<li>直接光漫反射</li>
+<li>直接光高光<ol>
+<li>法线分布函数 D</li>
+<li>几何函数 G</li>
+<li>菲涅尔函数 F</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>间接光<ol>
+<li>IBL</li>
+<li>SH</li>
+</ol>
+</li>
+</ol>
+<h2 id="实现之前"><a href="#实现之前" class="headerlink" title="实现之前"></a>实现之前</h2><h3 id="Unity的linear空间与Gamma空间"><a href="#Unity的linear空间与Gamma空间" class="headerlink" title="Unity的linear空间与Gamma空间"></a>Unity的linear空间与Gamma空间</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Shader中涉及到的参数如下</span><br><span class="line">_MainTex(&quot;Texture&quot;, 2D) &#x3D; &quot;white&quot; &#123;&#125;</span><br><span class="line">_Tint(&quot;Tint&quot;, Color) &#x3D; (1 ,1 ,1 ,1)</span><br><span class="line">&#x2F;&#x2F; 金属度</span><br><span class="line">_Metallic(&quot;Metallic&quot;, Range(0, 1)) &#x3D; 0 </span><br><span class="line">&#x2F;&#x2F; 粗糙度</span><br><span class="line">_Smoothness(&quot;Smoothness&quot;, Range(0, 1)) &#x3D; 0.5</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是设置金属度/光滑度贴图的时候，如果在linear空间下贴图设定勾选了SRGB的选项(这个勾选本质上就是对颜色做了一次pow(color,2.2)的操作)，那么需要在开头添加[Gamma]。一般来说PBR需要配合HDR进行开发。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 金属度</span><br><span class="line">[Gamma]_Metallic(&quot;Metallic&quot;, Range(0, 1)) &#x3D; 0 </span><br><span class="line">&#x2F;&#x2F; 粗糙度</span><br><span class="line">[Gamma]_Smoothness(&quot;Smoothness&quot;, Range(0, 1)) &#x3D; 0.5</span><br></pre></td></tr></table></figure>
+
+<p>这里是两个空间下进行的步骤</p>
+<p>linear颜色空间：</p>
+<p>1）unity对输入颜色做逆gamma校正</p>
+<p>2）shader对颜色进行计算并返回</p>
+<p>3）unity对返回颜色做gamma校正</p>
+<p>4）显示器对显卡输出的颜色做逆校正</p>
+<p>5）人眼对显示器显示的图像做gamma校正</p>
+<p>gamma颜色空间：</p>
+<p>1）shader对输入颜色进行计算并返回</p>
+<p>2）显示器对显卡输出的颜色做逆gamma校正</p>
+<p>3）人眼对显示器显示的图像做gamma校正</p>
+<h3 id="Roughness和perceptualRoughness的关系"><a href="#Roughness和perceptualRoughness的关系" class="headerlink" title="Roughness和perceptualRoughness的关系"></a>Roughness和perceptualRoughness的关系</h3><p>由Disney提出，在diffuse和specular中roughness使用的是不同的值，如下图所示，个人觉得并没有很清晰的解释另一个roughness是怎么来的，只是知道了roughness需要更明显的表现对表面的凸起的平滑。在Unity中计算关系如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">perceptualRoughness &#x3D; 1.0 - _Smoothness;</span><br><span class="line">roughness &#x3D; perceptualRoughness * perceptualRoughness;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_08.png" alt=""></p>
+<h2 id="直接光"><a href="#直接光" class="headerlink" title="直接光"></a>直接光</h2><h3 id="直接光漫反射"><a href="#直接光漫反射" class="headerlink" title="直接光漫反射"></a>直接光漫反射</h3><p>由渲染方程可得 Kd * Color / PI</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">half3 diffuseColor &#x3D; albedo * lightColor * NdotL &#x2F; UNITY_PI;</span><br></pre></td></tr></table></figure>
+
+<p>得到的结果如下，上方是从Unity官方扒下来的直接光部分，下方是除了PI之后的表现效果。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_09.png" alt=""></p>
+<p>可以看到得到的结果相当暗，但是在UnityStandardBRDF.cginc的注释中得到了答案。我理解的是这里因为是经验性的设置，为了统一和旧版本shader效果，保证整体不会太暗，漫反射和高光项同时乘了PI。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_10.png" alt=""></p>
+<p>因此漫反射改为如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">half3 diffuseColor &#x3D; albedo * lightColor * NdotL;</span><br></pre></td></tr></table></figure>
+
+<p>在Unity中主要使用的是Disney Diffuse</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Disney Diffuse</span><br><span class="line">half DisneyDiffuse(half NdotV, half NdotL, half LdotH, half perceptualRoughness)</span><br><span class="line">&#123;</span><br><span class="line">    half fd90 &#x3D; 0.5 + 2 * LdotH * LdotH * perceptualRoughness;</span><br><span class="line">    &#x2F;&#x2F; Two schlick fresnel term</span><br><span class="line">    half lightScatter   &#x3D; (1 + (fd90 - 1) * Pow5(1 - NdotL));</span><br><span class="line">    half viewScatter    &#x3D; (1 + (fd90 - 1) * Pow5(1 - NdotV));</span><br><span class="line"></span><br><span class="line">    return lightScatter * viewScatter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里采用的是渲染方程中的实现方式，得到的效果如下第四排</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_01.png" alt=""></p>
+<h3 id="直接光镜面反射"><a href="#直接光镜面反射" class="headerlink" title="直接光镜面反射"></a>直接光镜面反射</h3><p>这边儿是重点，整个的形式如下，Unity中采用的是cook-torrance的公式</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_11.png" alt=""></p>
+<h4 id="法线分布函数-D"><a href="#法线分布函数-D" class="headerlink" title="法线分布函数 D"></a>法线分布函数 D</h4><p>按上一篇理论来说，这个函数本质上输出的是一个比值，统计学上是一个正态分布函数，计算的是微平面上的半程向量H和宏观平面半程向量一致的数量有多少。在Unity中采用的是Trowbridge-Reitz GGX。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_12.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; NDF</span><br><span class="line">inline float TrowbridgeReitzGGX(float NdotH, float roughness)</span><br><span class="line">&#123;</span><br><span class="line">    float r &#x3D; max(roughness, 0.003);</span><br><span class="line">    float r2 &#x3D; r * r;</span><br><span class="line">    float d &#x3D; (NdotH * NdotH) * (r2 - 1.0) + 1.0;</span><br><span class="line">    return UNITY_INV_PI * r2 &#x2F; (d * d);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将实现的值输出，得到结果如下图第四排，当_Smoothness为0的时候没有高光的显示，当_Smoothness为1的时候球体上呈现出的是很小很亮的光斑。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_02.png" alt=""></p>
+<h4 id="几何函数-G"><a href="#几何函数-G" class="headerlink" title="几何函数 G"></a>几何函数 G</h4><p>这个函数描述的是遮挡的比率。需要注意的是几何函数内是计算两个方向的，一个是光线入射方向，一个是光线出射方向。<img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_13.png" alt=""></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_14.png" alt=""></p>
+<p>写入函数如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Geometric</span><br><span class="line">inline float SchlickGeometricGGX(float NdotV, float NdotL, float roughness)</span><br><span class="line">&#123;</span><br><span class="line">    float k &#x3D; (roughness + 1.0) * (roughness + 1.0) * 0.125;</span><br><span class="line">    float lightTerm &#x3D; NdotL &#x2F; lerp(NdotL, 1.0, k);</span><br><span class="line">    float viewTerm &#x3D; NdotV &#x2F; lerp(NdotV, 1.0, k);</span><br><span class="line"></span><br><span class="line">    return lightTerm * viewTerm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>按照公式进行计算得到的结果如下</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_03.png" alt=""></p>
+<h4 id="菲涅尔-F"><a href="#菲涅尔-F" class="headerlink" title="菲涅尔 F"></a>菲涅尔 F</h4><p>菲涅尔主要描述的是反射光线对比光线被折射的部分所占的比率，这个比率会随着我们观察的角度不同而不同。当光线碰撞到一个表面的时候，菲涅尔方程会根据观察角度告诉我们被反射的光线所占的百分比。利用这个反射比率和能量守恒，我们可以直接得出光线被折射的部分以及光线剩余的能量。一般当观察方向是垂直的时候获得的是对应物体最基本的反射性，基本没有菲涅尔相关的影响，当掠射角增加，菲涅尔现象会明显很多。</p>
+<p>通常会采用Fresnel-Schlick的方法：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_15.png" alt=""></p>
+<p>在经过Unreal拟合优化之后，通过exp2函数提高了计算效率，变成了这样：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_16.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">half3 F0 &#x3D; lerp(half3(0.04,0.04,0.04), albedo, _Metallic);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Fresnel</span><br><span class="line">inline float3 Fresnel(float3 F0, float VdotH)</span><br><span class="line">&#123;</span><br><span class="line">    float power &#x3D; (-5.55473 * VdotH - 6.98316) * VdotH;</span><br><span class="line">    return F0 + (1 - F0) * exp2(power);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最终菲涅尔效果如下：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_04.png" alt=""></p>
+<p>综合整体的直接光效果后，下边面两排分别是Unity自带的standard，和手写的shader对比</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_05.png" alt=""></p>
+<h2 id="环境光"><a href="#环境光" class="headerlink" title="环境光"></a>环境光</h2><p>环境光的公式如下</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_17.png" alt=""></p>
+<p>第一部分为间接光漫反射，第二部分为间接光镜面反射。</p>
+<h3 id="间接光漫反射"><a href="#间接光漫反射" class="headerlink" title="间接光漫反射"></a>间接光漫反射</h3><p>根据<a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/07%20PBR/03%20IBL/01%20Diffuse%20irradiance/">Learnopengl</a>提到的方法，通常情况下是对间接光进行预处理，将经过处理后的数据存到一张新的贴图，贴图计算主要是通过卷积完成。这张贴图又叫辐照度图，在每个入射方向取平均值的结果。Unity中已经自动完成了这一步，是通过球谐函数进行编码的全局光照，Unity整个的执行过程为：将环境贴图进行预积分得到辐照度图→将辐照度图进行球谐函数编码存储。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_18.png" alt=""></p>
+<p>在Unity中通过直接调用UnityCG.cginc中的ShadeSH9函数获取相应的光照信息，代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 获取辐照度</span><br><span class="line">half3 ambientContribution &#x3D; ShadeSH9(float4(normalWorld, 1));</span><br><span class="line"></span><br><span class="line">half3 ambient &#x3D; 0.03 * albedo;</span><br><span class="line">&#x2F;&#x2F; </span><br><span class="line">half3 iblDiffuse &#x3D; max(half3(0, 0, 0), ambient.rgb + ambientContribution);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 和直接光的系数不同需要重新计算</span><br><span class="line">float3 Flast &#x3D; FresnelSchlickRoughness(max(NdotV, 0.0), F0, roughtness);</span><br><span class="line">float kdLast &#x3D; (1 - Flast) * (1 - _Metallic);</span><br><span class="line"></span><br><span class="line">half3 iblDiffuseResult &#x3D; iblDiffuse * kdLast * albedo;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; ***************</span><br><span class="line"></span><br><span class="line">float3 fresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)</span><br><span class="line">&#123;</span><br><span class="line">    return F0 + (max(float3(1.0 - roughness, 1.0 - roughness, 1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加上间接光之后效果如下图第二排：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_06.png" alt=""></p>
+<h3 id="间接光镜面反射"><a href="#间接光镜面反射" class="headerlink" title="间接光镜面反射"></a>间接光镜面反射</h3><p>Unreal给出的方法是使用近似算法将高光反射的方程简化成右边。</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_19.png" alt=""></p>
+<p>镜面反射部分，使用的是对预处理的环境贴图进行LOD操作之后会生成有多层的一张贴图，通过对这张贴图进行三线性插值，得到的就是对应的mip层级数据，最后在根据这个数据对HDR进行解码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 根据粗糙度获取mip的层级</span><br><span class="line">half mipRoughness &#x3D; perceptualRoughness * (1.7 - 0.7 * perceptualRoughness);</span><br><span class="line">&#x2F;&#x2F; 获取视线的反射</span><br><span class="line">half3 reflectVec &#x3D; reflect(-viewDir, normalWorld);</span><br><span class="line">&#x2F;&#x2F; 获取mip层级</span><br><span class="line">half mip &#x3D; mipRoughness * UNITY_SPECCUBE_LOD_STEPS;</span><br><span class="line">&#x2F;&#x2F; 三线性插值</span><br><span class="line">half4 rgbm &#x3D; UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, reflectVec, mip);</span><br><span class="line">&#x2F;&#x2F; 从HDR下解码</span><br><span class="line">half3 iblSpecular &#x3D; DecodeHDR(rgbm, unity_SpecCube0_HDR);</span><br></pre></td></tr></table></figure>
+
+<p>这样就得到了简化方程的左半部分，而右半部分在Unity中并没有采用LUT的方法，而是通过surfaceReduction的系数，以及一个在F0（specColor就是我们的F0）和grazingTerm之间进行插值的菲涅尔系数。Unity中的计算如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">half surfaceReduction &#x3D; 1.0 &#x2F; (roughtness * roughtness + 1.0);</span><br><span class="line">half oneMinusReflectivity &#x3D; unity_ColorSpaceDielectricSpec.a - _Metallic * unity_ColorSpaceDielectricSpec.a;</span><br><span class="line">half grazingTerm &#x3D; saturate(_Smoothness + (1.0 - oneMinusReflectivity));</span><br><span class="line"></span><br><span class="line">half3 iblSpecularResult &#x3D; iblSpecular * surfaceReduction * FresnelLerp(F0, grazingTerm, NdotV);</span><br></pre></td></tr></table></figure>
+
+<p>最后综合得到的效果如下：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_07.png" alt=""></p>
+<p>参考：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/68025039">https://zhuanlan.zhihu.com/p/68025039</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/141904960">https://zhuanlan.zhihu.com/p/141904960</a></li>
+<li><a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/07%20PBR/03%20IBL/01%20Diffuse%20irradiance/">https://learnopengl-cn.github.io/07%20PBR/03%20IBL/01%20Diffuse%20irradiance/</a></li>
+</ol>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">ZY-Zhang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://crunchybiscuits.github.io/2021/10/16/PBR%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA(%E4%BA%8C)/">https://crunchybiscuits.github.io/2021/10/16/PBR%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA(%E4%BA%8C)/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PBR/">PBR</a></div><div class="post_share"><div class="social-share" data-image="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_18.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/10/14/PBR%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA(%E4%B8%80)/"><img class="next-cover" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_02.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">PBR基础理论(一)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2021/10/14/PBR基础理论(一)/" title="PBR基础理论(一)"><img class="cover" data-lazy-src="https://raw.githubusercontent.com/CrunchyBiscuits/Image-Host/master/img/PBR_Theory_02.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-10-14</div><div class="title">PBR基础理论(一)</div></div></a></div></div></div></article></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By ZY-Zhang</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="Switch Between Traditional Chinese And Simplified Chinese">繁</button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></section><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page/instantpage.min.js" type="module" defer></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script>var endLoading = function () {
+  document.body.style.overflow = 'auto';
+  document.getElementById('loading-box').classList.add("loaded")
+}
+window.addEventListener('load',endLoading)</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><div class="aplayer no-destroy" data-id="5234687838" data-server="netease" data-type="playlist" data-fixed="true" data-mini="true" data-listFolded="false" data-order="random" data-preload="none" data-autoplay="false" muted></div><script defer="defer" id="ribbon_piao" mobile="false" src="/js/third-party/piao.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/assets/hijiki.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"rect":"opacity:0.5","aplayer":null,"meting":true,"asset_inject":false,"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
